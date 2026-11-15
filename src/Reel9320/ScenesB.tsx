@@ -21,6 +21,7 @@ import { ETIHAD_CROWD, SUNDERLAND_CROWD } from "./ScenesA";
 import { Sfx } from "./Sfx";
 import { Ball, Confetti, Flash, Goal, Stadium } from "./Stage";
 import { body, C, display, LAYOUT } from "./theme";
+import { AGUERO_GOAL } from "./timeline";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const G = LAYOUT.ground;
@@ -124,7 +125,7 @@ export const SceneAguero: React.FC = () => {
   const pass = 28; // Agüero → Balotelli
   const layoff = 46; // Balotelli, falling, gives it back
   const contact = 128;
-  const goal = 150;
+  const goal = AGUERO_GOAL;
   const scored = frame >= goal;
 
   // Agüero path
@@ -266,8 +267,8 @@ export const SceneAguero: React.FC = () => {
       <Sfx name="Whoosh tiro" file="whoosh.wav" from={contact - 4} volume={0.8} />
       <Sfx name="Disparo" file="kick.wav" from={contact} volume={1} />
       <Sfx name="Boom gol" file="boom.wav" from={goal} volume={1} />
-      <Sfx name="Estadio explota" file="roar.wav" from={goal} volume={1} />
-      <Sfx name="Estadio explota 2" file="roar.wav" from={goal + 50} volume={0.7} />
+      <Sfx name="Estadio explota" file="roar.wav" from={goal} volume={0.6} />
+      <Sfx name="Estadio explota 2" file="roar.wav" from={goal + 60} volume={0.45} />
     </AbsoluteFill>
   );
 };
