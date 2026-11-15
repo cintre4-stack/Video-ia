@@ -14,7 +14,7 @@ export type Pose =
   | "dive";
 
 export type Mood = "happy" | "neutral" | "sad" | "shout" | "worried";
-export type Hair = "short" | "mohawk" | "buzz" | "blond" | "long" | "bald";
+export type Hair = "short" | "mohawk" | "buzz" | "blond" | "long" | "bald" | "curly";
 export type Pattern = "plain" | "hoops" | "stripes";
 
 export type Kit = {
@@ -24,6 +24,8 @@ export type Kit = {
   shorts: string;
   socks: string;
   number?: string | number;
+  /** font size of the shirt number / text (default 38) */
+  numberSize?: number;
   numberColor?: string;
 };
 
@@ -239,7 +241,7 @@ export const Character: React.FC<CharacterProps> = ({
               y={186}
               textAnchor="middle"
               fontFamily="Lilita One, sans-serif"
-              fontSize={38}
+              fontSize={kit.numberSize ?? 38}
               fill={kit.numberColor ?? C.white}
               stroke="rgba(0,0,0,0.35)"
               strokeWidth={2}
@@ -330,6 +332,17 @@ const HairShape: React.FC<{ hair: Hair; color: string }> = ({ hair, color }) => 
       );
     case "blond":
       return <path d="M 44 66 Q 44 8 100 8 Q 156 8 156 66 Q 140 34 100 32 Q 60 34 44 66 Z" fill="#F4D35E" />;
+    case "curly":
+      return (
+        <g fill={color}>
+          <path d="M 42 76 Q 36 4 100 2 Q 164 4 158 76 Q 150 42 100 36 Q 50 42 42 76 Z" />
+          {[48, 66, 84, 100, 116, 134, 152].map((cx, i) => (
+            <circle key={cx} cx={cx} cy={i % 2 ? 6 : 16} r={16} />
+          ))}
+          <circle cx={42} cy={44} r={14} />
+          <circle cx={158} cy={44} r={14} />
+        </g>
+      );
     case "long":
       return <path d="M 40 100 Q 34 6 100 6 Q 166 6 160 100 Q 152 40 100 34 Q 48 40 40 100 Z" fill={color} />;
     case "short":

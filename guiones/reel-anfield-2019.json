@@ -1,0 +1,59 @@
+{
+  "title": "Reel Anfield 2019 · Liverpool 4-0 Barcelona (semifinal Champions)",
+  "note": "Texto para Piper: nombres en ingles escritos tal como suenan en espanol.",
+  "lines": [
+    [
+      "s01",
+      "Tres a cero en la ida. Remontar era imposible. O eso creían."
+    ],
+    [
+      "s02",
+      "Primero de mayo de dos mil diecinueve. Semifinal de Champions. Suárez marca contra su ex equipo."
+    ],
+    [
+      "s03",
+      "Y Messi firma una obra de arte. Falta directa. Su gol seiscientos con el Barça. Tres a cero."
+    ],
+    [
+      "s04",
+      "Para la vuelta, el Líverpul pierde a Salá y a Firmino. Salá llega a Ánfild con una camiseta: néver guiv ap. Nunca te rindas."
+    ],
+    [
+      "s05",
+      "Minuto siete. ¡Oríyi! Uno a cero. Ánfild empieza a creer."
+    ],
+    [
+      "s06",
+      "Al descanso se lesiona Róbertson. Entra Wáinaldum."
+    ],
+    [
+      "s07",
+      "Minuto cincuenta y cuatro: ¡Wáinaldum! Dos minutos después: ¡otra vez Wáinaldum! Tres a tres en el global."
+    ],
+    [
+      "s08a",
+      "Minuto setenta y nueve. Córner. El Barça, despistado."
+    ],
+    [
+      "s08b",
+      "¡Trent la saca rápido! ¡Oríyi! ¡Cuatro a cero!"
+    ],
+    [
+      "s09",
+      "Pitido final. Ánfild canta: iúl néver uók alóun."
+    ],
+    [
+      "s10",
+      "Cuatro a tres en el global. Un mes después, el Líverpul era campeón de Europa."
+    ],
+    [
+      "s11",
+      "¿Es la mejor remontada de la historia de la Champions? Te leo en comentarios."
+    ]
+  ],
+  "speed": {
+    "s05": 0.85,
+    "s07": 0.85,
+    "s08b": 0.8
+  }
+}

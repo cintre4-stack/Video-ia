@@ -269,10 +269,11 @@ export const Caption = Interactive.create({
 });
 
 /** Small label above the caption: minute badge like "20'". */
-export const MinuteBadge: React.FC<{ text: string; color: string; textColor?: string }> = ({
+export const MinuteBadge: React.FC<{ text: string; color: string; textColor?: string; top?: number }> = ({
   text,
   color,
   textColor = C.white,
+  top = LAYOUT.badgeTop,
 }) => {
   const frame = useCurrentFrame();
   const s = interpolate(frame, [0, 6, 12], [0, 1.2, 1], {
@@ -285,7 +286,7 @@ export const MinuteBadge: React.FC<{ text: string; color: string; textColor?: st
         position: "absolute",
         left: 0,
         right: 0,
-        top: LAYOUT.badgeTop,
+        top,
         display: "flex",
         justifyContent: "center",
         scale: `${s}`,
