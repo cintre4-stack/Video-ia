@@ -25,7 +25,7 @@ const LINES = [
   ["s06", "Minuto noventa. Cinco de descuento. El City está muerto."],
   ["s07", "Dzeko, de cabeza. ¡Dos a dos! Pero el empate... no sirve de nada."],
   ["s08", "En Sunderland ya ha terminado. Los jugadores del United esperan en el césped. Se creen campeones."],
-  ["s09a", "Última jugada. Agüero para Balotelli... Balotelli, cayendo, se la devuelve..."],
+  ["s09a", "Última jugada. Balotelli, desde el suelo, para Agüero..."],
   ["s09b", "¡Agüeroooo! ¡El City es campeón!"],
   ["s10", "Mismos puntos. Ocho goles de diferencia. Primera liga del City en cuarenta y cuatro años."],
   ["s11", "¿Y tú, dónde estabas en el noventa y tres veinte? Cuéntamelo en comentarios."],

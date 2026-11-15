@@ -108,7 +108,7 @@ export const Reel9320: React.FC = () => {
         name="Ambiente estadio"
         src={staticFile("sfx/crowd.wav")}
         volume={(f) =>
-          interpolate(f, [0, 20, durationInFrames - 30, durationInFrames], [0, 0.18, 0.18, 0], {
+          interpolate(f, [0, 20, durationInFrames - 30, durationInFrames], [0, 0.12, 0.12, 0], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
           })

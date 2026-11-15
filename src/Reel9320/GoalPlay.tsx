@@ -2,6 +2,7 @@ import { Audio } from "@remotion/media";
 import React from "react";
 import { Easing, interpolate, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { Character, type CharacterProps } from "./Character";
+import { SFX_GAIN } from "./Sfx";
 import { Ball, Flash, Goal } from "./Stage";
 import { display, C, LAYOUT } from "./theme";
 
@@ -127,10 +128,10 @@ export const GoalPlay: React.FC<{
         </div>
       )}
       <Sequence name="SFX patada" from={contact} durationInFrames={10} layout="none">
-        <Audio src={staticFile("sfx/kick.wav")} volume={0.9} />
+        <Audio src={staticFile("sfx/kick.wav")} volume={0.9 * SFX_GAIN} />
       </Sequence>
       <Sequence name={`SFX ${reaction}`} from={goalAt} durationInFrames={120} layout="none">
-        <Audio src={staticFile(`sfx/${reaction}.wav`)} volume={reaction === "roar" ? 0.7 : 0.8} />
+        <Audio src={staticFile(`sfx/${reaction}.wav`)} volume={(reaction === "roar" ? 0.7 : 0.8) * SFX_GAIN} />
       </Sequence>
     </>
   );

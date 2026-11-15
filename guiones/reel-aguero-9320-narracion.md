@@ -13,8 +13,8 @@ Entre corchetes, la pronunciación para la voz de IA.
 | 6 | Descuento | Minuto noventa. Cinco de descuento. El City está muerto. |
 | 7 | Džeko 90+2 | Džeko [Dyeko], de cabeza. ¡Dos a dos! Pero el empate… no sirve de nada. |
 | 8 | Sunderland | En Sunderland [Sánderland] ya ha terminado. Los jugadores del United esperan en el césped. Se creen campeones. |
-| 9a | 93:05 (antes del gol) | Última jugada. Agüero para Balotelli… Balotelli, cayendo, se la devuelve… |
-| 9b | 93:20 (en el gol) | ¡Agüeroooo! ¡El City es campeón! |
+| 9a | 93:05 (antes del gol) | Última jugada. Balotelli, desde el suelo, para Agüero… |
+| 9b | 93:20 (en el gol) | ¡Agüero! ¡Agüero! ¡El City es campeón! |
 | 10 | Clasificación | Mismos puntos. Ocho goles de diferencia. Primera liga del City en cuarenta y cuatro años. |
 | 11 | Cierre | ¿Y tú, dónde estabas en el noventa y tres veinte? Cuéntamelo en comentarios. |
 
