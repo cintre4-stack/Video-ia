@@ -131,7 +131,7 @@ export const SceneHook: React.FC = () => {
 /* ───────────── 2. Frau Troffea sale a la calle ───────────── */
 export const SceneTroffea: React.FC = () => {
   const frame = useCurrentFrame();
-  const dance = cue("s02", 0.72);
+  const dance = cue("s02", 0.82);
   const walkEnd = dance - 14;
   const x = interpolate(frame, [0, walkEnd], [-120, 540], { ...clamp, easing: Easing.out(Easing.quad) });
   const pose: DPose = frame < walkEnd ? "walk" : frame < dance ? "idle" : "dance";
@@ -232,7 +232,7 @@ const CROWD = new Array(30).fill(0).map((_, i) => {
 });
 export const SceneSpread: React.FC = () => {
   const frame = useCurrentFrame();
-  const week = cue("s04", 0.12);
+  const week = cue("s04", 0.2);
   const month = cue("s04", 0.5);
   const count =
     frame < month
@@ -277,9 +277,9 @@ const Flame: React.FC = () => (
 );
 export const SceneDoctors: React.FC = () => {
   const frame = useCurrentFrame();
-  const diag = cue("s05", 0.42);
-  const cureQ = cue("s05", 0.7);
-  const stamp = cue("s05", 0.8);
+  const diag = cue("s05", 0.52);
+  const cureQ = cue("s05", 0.72);
+  const stamp = cue("s05", 0.83);
   const paperIn = interpolate(frame, [cue("s05", 0.2), cue("s05", 0.2) + 12], [0, 1], { ...clamp, easing: Easing.bezier(0.16, 1, 0.3, 1) });
   const stampScale = interpolate(frame - stamp, [0, 5, 10], [3, 0.9, 1], clamp);
   return (
@@ -361,7 +361,7 @@ export const SceneRave: React.FC = () => {
     { t: cue("s06", 0.32), label: "SALONES" },
     { t: cue("s06", 0.5), label: "ESCENARIO" },
   ];
-  const neon = cue("s06", 0.7);
+  const neon = cue("s06", 0.78);
   const flicker = frame >= neon ? (frame - neon < 10 ? (Math.floor(frame / 2) % 2 ? 1 : 0.2) : 0.85 + 0.15 * Math.sin(frame * 0.8)) : 0;
   const beams = ["#FF3EA5", "#1FB5A8", "#7B4DFF", "#FFC93C"];
   return (
@@ -513,7 +513,7 @@ export const SceneShrine: React.FC = () => {
   const frame = useCurrentFrame();
   const toShrine = cue("s08", 0.3);
   const shoes = cue("s08", 0.62);
-  const ended = cue("s08", 0.86);
+  const ended = cue("s08", 0.82);
   if (frame < toShrine) {
     const boardIn = interpolate(frame, [4, 16], [0, 1], { ...clamp, easing: Easing.bezier(0.16, 1, 0.3, 1) });
     return (
@@ -630,11 +630,11 @@ const Ghost: React.FC<{ frame: number }> = ({ frame }) => (
 );
 export const SceneTheories: React.FC = () => {
   const frame = useCurrentFrame();
-  const nobody = cue("s09", 0.2);
+  const nobody = cue("s09", 0.14);
   const cards = [
     { t: cue("s09", 0.32), icon: <Bread />, title: "¿HONGO EN EL PAN?", sub: "El cornezuelo del centeno", color: "#FFB547" },
-    { t: cue("s09", 0.55), icon: <Swirl frame={frame} />, title: "¿HISTERIA COLECTIVA?", sub: "Hambre, enfermedad y miedo", color: "#9B7BFF" },
-    { t: cue("s09", 0.86), icon: <Ghost frame={frame} />, title: "¿UNA MALDICIÓN?", sub: "Muchos culparon a San Vito", color: "#4DD6C8" },
+    { t: cue("s09", 0.48), icon: <Swirl frame={frame} />, title: "¿HISTERIA COLECTIVA?", sub: "Hambre, enfermedad y miedo", color: "#9B7BFF" },
+    { t: cue("s09", 0.82), icon: <Ghost frame={frame} />, title: "¿UNA MALDICIÓN?", sub: "Muchos culparon a San Vito", color: "#4DD6C8" },
   ];
   return (
     <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 40%, #3A2466 0%, #120A24 85%)" }}>
@@ -713,9 +713,9 @@ const Foot: React.FC<{ frame: number }> = ({ frame }) => (
 );
 export const SceneCta: React.FC = () => {
   const frame = useCurrentFrame();
-  const comments = cue("s10", 0.16);
-  const foot = cue("s10", 0.45);
-  const stop = cue("s10", 0.78);
+  const comments = cue("s10", 0.12);
+  const foot = cue("s10", 0.48);
+  const stop = cue("s10", 0.77);
   const stopped = frame >= stop;
   return (
     <AbsoluteFill>
