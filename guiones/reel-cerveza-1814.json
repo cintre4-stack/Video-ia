@@ -1,0 +1,17 @@
+{
+  "title": "Reel La inundación de cerveza · Londres 1814",
+  "note": "Texto para Piper (nombres ingleses escritos como suenan). La version con etiquetas para ElevenLabs esta en guiones/reel-cerveza-1814-elevenlabs.md",
+  "lines": [
+    ["s01", "En mil ochocientos catorce, una ola gigante arrasó un barrio de Londres. Pero no era agua. Era cerveza."],
+    ["s02", "Diecisiete de octubre. Fábrica de cerveza Miux, en pleno Londres. Dentro, una cuba enorme, de casi siete metros de alto, llena de cerveza negra."],
+    ["s03", "Por la tarde, un empleado, Yorch Crik, ve que un aro de hierro se ha soltado. Su jefe le dice: tranquilo, no pasa nada."],
+    ["s04", "Una hora después, ¡bum! La cuba revienta. Y revienta a las demás, como fichas de dominó."],
+    ["s05", "Más de un millón de litros de cerveza salen a la calle. Una ola de casi cinco metros."],
+    ["s06", "Al lado estaba Seint Yails, uno de los barrios más pobres de Londres. Casas y sótanos se inundaron en segundos."],
+    ["s07", "Fue una tragedia. Murieron ocho personas. Cinco estaban en un velatorio, en un sótano. Otra era una camarera de catorce años."],
+    ["s08", "Y aquí viene el mito. Dicen que la gente salió con cazos a beberse la cerveza de la calle. Pero no hay pruebas de que pasara."],
+    ["s09", "¿Y el juicio? El jurado dijo que fue un acto de Dios. Nadie fue culpable. Y encima, la fábrica recuperó los impuestos de la cerveza perdida."],
+    ["s10", "¿Fue un accidente, o alguien debería haber pagado? Te leo en comentarios. Y la próxima vez que brindes, mira bien el barril."]
+  ],
+  "speed": { "s04": 0.85, "s05": 0.88 }
+}

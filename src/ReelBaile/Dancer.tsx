@@ -14,10 +14,13 @@ export type DPose =
   | "pipe"
   | "point"
   | "pray"
-  | "stop";
+  | "stop"
+  | "run"
+  | "shrug"
+  | "cheers";
 
 export type DMood = "happy" | "crazy" | "neutral" | "worried" | "exhausted" | "shout" | "wink" | "shock";
-export type Hat = "none" | "coif" | "cap" | "doctor" | "hood" | "crown";
+export type Hat = "none" | "coif" | "cap" | "doctor" | "hood" | "crown" | "tophat" | "wig";
 
 export type Look = {
   skin: string;
@@ -49,7 +52,7 @@ export type DancerProps = Look & {
   lift?: number;
   /** red shoes glow (San Vito) */
   glowShoes?: boolean;
-  holding?: "scroll" | "none";
+  holding?: "scroll" | "none" | "mug" | "ladle";
 };
 
 const LEG = 70;
@@ -188,6 +191,27 @@ export const Dancer: React.FC<DancerProps> = (p) => {
       armR = -95;
       armL = 12;
       break;
+    case "run": {
+      const c = Math.sin(frame * 0.75);
+      legL = c * 50;
+      legR = -c * 50;
+      armL = -c * 60 + 20;
+      armR = c * 60 - 20;
+      bob = -Math.abs(Math.cos(frame * 0.75)) * 16;
+      tilt = 12;
+      break;
+    }
+    case "shrug":
+      armL = 60 + Math.sin(frame * 0.2) * 6;
+      armR = -60 - Math.sin(frame * 0.2) * 6;
+      headTilt = -8;
+      bob = Math.sin(frame * 0.12) * 3;
+      break;
+    case "cheers":
+      armR = -150;
+      armL = 14;
+      bob = Math.sin(frame * 0.2) * 4;
+      break;
   }
 
   const scale = height / 320;
@@ -249,6 +273,21 @@ export const Dancer: React.FC<DancerProps> = (p) => {
             <g transform={`rotate(${armR} 134 146)`}>
               <rect x={118} y={198} width={34} height={60} rx={6} fill={B.parchment} stroke={B.parchmentDark} strokeWidth={4} />
               <rect x={114} y={196} width={42} height={8} rx={4} fill={B.parchmentDark} />
+            </g>
+          )}
+          {holding === "mug" && (
+            <g transform={`rotate(${armR} 134 146)`}>
+              <g transform="translate(134 214) rotate(180)">
+                <rect x={-22} y={-34} width={44} height={56} rx={8} fill="#E8B04A" stroke={B.ink} strokeWidth={4} />
+                <path d="M 22 -20 q 18 0 18 14 q 0 14 -18 14" fill="none" stroke={B.ink} strokeWidth={5} />
+                <path d="M -26 -34 q 8 -14 20 -6 q 10 -12 22 0 q 10 -6 10 6 Z" fill="#FFF8E6" stroke={B.ink} strokeWidth={3} />
+              </g>
+            </g>
+          )}
+          {holding === "ladle" && (
+            <g transform={`rotate(${armR} 134 146)`}>
+              <rect x={130} y={190} width={8} height={70} rx={4} fill="#8A8A8A" stroke={B.ink} strokeWidth={2} />
+              <path d="M 116 258 h 36 q 0 24 -18 24 q -18 0 -18 -24 Z" fill="#9A9A9A" stroke={B.ink} strokeWidth={3} />
             </g>
           )}
           {/* head */}
@@ -339,6 +378,27 @@ const HairAndHat: React.FC<{ hair: string; hairColor: string; hat: Hat; hatColor
       );
     case "hood":
       return <path d="M 34 110 Q 22 -6 100 -10 Q 178 -6 166 110 Q 156 40 100 32 Q 44 40 34 110 Z" fill={hatColor} />;
+    case "tophat":
+      return (
+        <>
+          {hairEl}
+          <rect x={58} y={-62} width={84} height={92} rx={6} fill={hatColor} stroke="rgba(0,0,0,0.3)" strokeWidth={3} />
+          <rect x={58} y={8} width={84} height={12} fill="#7A1E2E" />
+          <rect x={36} y={24} width={128} height={14} rx={7} fill={hatColor} stroke="rgba(0,0,0,0.3)" strokeWidth={3} />
+        </>
+      );
+    case "wig":
+      return (
+        <g fill="#F2EFE6" stroke="rgba(0,0,0,0.18)" strokeWidth={3}>
+          <path d="M 40 80 Q 34 4 100 2 Q 166 4 160 80 Q 150 40 100 34 Q 50 40 40 80 Z" />
+          {[0, 1, 2].map((r) => (
+            <g key={r}>
+              <circle cx={40} cy={84 + r * 24} r={15} />
+              <circle cx={160} cy={84 + r * 24} r={15} />
+            </g>
+          ))}
+        </g>
+      );
     case "crown":
       return (
         <>
