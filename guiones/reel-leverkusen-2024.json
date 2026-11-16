@@ -1,0 +1,19 @@
+{
+  "title": "Reel Leverkusen 2023-24 · Neverkusen nunca más (campeón invicto)",
+  "note": "Texto para Piper: nombres escritos tal como suenan. Para ElevenLabs usar guiones/reel-leverkusen-2024-narracion.md.",
+  "lines": [
+    ["s01", "Durante veintidós años les llamaron... Néverkusen. El equipo que nunca gana nada."],
+    ["s02", "Rebobinemos. Dos mil dos: se les escapa la Liga, pierden la final de Copa y la final de Champions. Todo en un mes."],
+    ["s03", "Y arriba, el Báyern. Once ligas seguidas."],
+    ["s04", "Octubre de dos mil veintidós. El Léverkusen, en descenso. Y llega Shabi Alonso."],
+    ["s05", "Jornada tras jornada... no pierden. Ni una vez."],
+    ["s06", "Y cuando van perdiendo, marcan en el descuento. Ocho goles en el añadido. Récord."],
+    ["s07", "Febrero: tres a cero al Báyern. Aviso."],
+    ["s08", "Catorce de abril de dos mil veinticuatro. Contra el Vérder Brémen. Bonifás, de penalti. ¡Y Yaka, golazo!"],
+    ["s09", "¡Virts! ¡Tres a cero! ¡Virts otra vez! ¡La afición invade el campo! ¡Y Virts, el quinto!"],
+    ["s10", "¡Campeones! Primera Bundesliga en ciento veinte años de historia."],
+    ["s11", "Treinta y cuatro partidos. Cero derrotas. Nadie lo había hecho jamás en Alemania."],
+    ["s12", "Néverkusen... nunca más. ¿Es la mejor temporada que has visto? Te leo en comentarios."]
+  ],
+  "speed": { "s02": 0.85, "s06": 0.85, "s09": 0.8, "s10": 0.85 }
+}
