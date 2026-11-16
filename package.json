@@ -31,7 +31,10 @@
     "dev": "remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "yt:pack": "node scripts/youtube/build-pack.mjs",
+    "yt:upload": "node scripts/youtube/upload.mjs",
+    "yt:auth": "node scripts/youtube/auth.mjs"
   },
   "allowScripts": {
     "esbuild": false

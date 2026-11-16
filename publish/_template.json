@@ -1,0 +1,33 @@
+{
+  "composition": "Reel-Id-From-Root-tsx",
+  "title": "Gancho corto + resultado o momento clave #Shorts",
+  "description": [
+    "Línea 1: el gancho (es lo que se ve sin pulsar \"más\").",
+    "",
+    "Línea 2: contexto con fecha, partido y resultado.",
+    "",
+    "Pregunta para comentarios 👇",
+    "",
+    "Animación y voz narrada creadas con IA. Recreación ilustrada, sin imágenes reales del partido.",
+    "",
+    "#Shorts #Equipo #Competicion #Futbol"
+  ],
+  "tags": [
+    "jugador",
+    "equipo",
+    "competición año",
+    "fútbol",
+    "historias de fútbol",
+    "animación fútbol",
+    "shorts"
+  ],
+  "categoryId": "17",
+  "defaultLanguage": "es",
+  "defaultAudioLanguage": "es",
+  "privacyStatus": "private",
+  "publishAt": null,
+  "madeForKids": false,
+  "containsSyntheticMedia": true,
+  "thumbnailFrame": 0,
+  "pinnedComment": "Pregunta que invite a comentar y a pedir el próximo reel."
+}
