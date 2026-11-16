@@ -1,0 +1,17 @@
+{
+  "title": "Reel La plaga del baile · Estrasburgo 1518",
+  "note": "Texto para Piper: palabras en ingles escritas tal como suenan en espanol. Con ElevenLabs se puede usar la grafia normal (challenge, TikTok, rave).",
+  "lines": [
+    ["s01", "El primer chálench viral de la historia no empezó en Tik Tok. Empezó en mil quinientos dieciocho. Y acabó fatal."],
+    ["s02", "Estrasburgo, julio. Una mujer, Frau Trófea, sale a la calle, y se pone a bailar."],
+    ["s03", "Sin música. Sin motivo. Su marido le suplica que pare. Ella sigue. Y sigue. Durante días."],
+    ["s04", "A la semana, ya eran más de treinta. Al mes, cientos de personas bailando sin parar por las calles."],
+    ["s05", "¿Y la solución de las autoridades? Los médicos lo tenían clarísimo: era sangre caliente. ¿La cura? ¡Bailar todavía más!"],
+    ["s06", "Así que contrataron músicos, abrieron salones y montaron un escenario. Básicamente, una reiv medieval."],
+    ["s07", "Mala idea. Con los pies destrozados, muchos caían agotados. Y, según las crónicas, algunos murieron."],
+    ["s08", "Al final, cambiaron de plan. Prohibieron la música, y llevaron a los bailarines al santuario de San Vito, con zapatos rojos y oraciones. Poco a poco, el baile se apagó."],
+    ["s09", "¿Por qué pasó? Nadie lo sabe. ¿Un hongo en el pan? ¿Histeria colectiva por el hambre y el miedo? ¿Una maldición?"],
+    ["s10", "¿Tú qué crees? Te leo en comentarios. Y oye, si llevas un rato moviendo el pie con esta música, para. Por si acaso."]
+  ],
+  "speed": { "s04": 0.85, "s05": 0.88, "s07": 1.0 }
+}
