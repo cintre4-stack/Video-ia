@@ -18,29 +18,31 @@ INK = (18, 18, 24)
 YEL = (255, 230, 90)
 
 # ----------------------------------------------------------------- kits ----
-SKIN = (240, 196, 160)
-SKIN2 = (196, 140, 100)
-BAR = dict(shirt=(0, 77, 152), stripe=(165, 0, 68), shorts=(0, 50, 110), socks=(0, 50, 110),
-           style="vstripes", skin=SKIN, hair=(40, 28, 20), gk=False, numc=(255, 214, 60))
-PSG = dict(shirt=(10, 30, 80), stripe=(218, 30, 50), shorts=(10, 30, 80), socks=(10, 30, 80),
-           style="band", skin=SKIN, hair=(30, 22, 16), gk=False, numc=(255, 255, 255))
-TER = dict(shirt=(40, 175, 90), stripe=(20, 120, 60), shorts=(20, 110, 60), socks=(40, 175, 90),
-           style="plain", skin=SKIN, hair=(205, 170, 90), gk=True, numc=(255, 255, 255))
-TRAPP = dict(shirt=(95, 98, 110), stripe=(60, 62, 72), shorts=(60, 62, 72), socks=(95, 98, 110),
-             style="plain", skin=SKIN, hair=(120, 90, 50), gk=True, numc=(255, 255, 255))
-REF = dict(shirt=(20, 20, 26), stripe=(60, 60, 70), shorts=(20, 20, 26), socks=(20, 20, 26),
-           style="plain", skin=SKIN, hair=(40, 30, 20), gk=False, numc=(255, 255, 255))
+from personaje9320 import draw_character, SKIN as SK
+
+BAR = dict(shirt=(0, 77, 152), shirt2=(165, 0, 68), pattern="stripes", shorts=(0, 50, 110), socks=(0, 50, 110),
+           numberColor=(255, 214, 60), skin=SK["light"], hair="short", hair_color=(43, 27, 16), beard=False, gk=False)
+PSG = dict(shirt=(10, 30, 80), shirt2=(218, 30, 50), pattern="band", shorts=(10, 30, 80), socks=(10, 30, 80),
+           numberColor=(255, 255, 255), skin=SK["light"], hair="short", hair_color=(43, 27, 16), beard=False, gk=False)
+TER = dict(BAR, shirt=(47, 191, 74), pattern=None, shorts=(30, 122, 48), socks=(47, 191, 74), numberColor=(255, 255, 255),
+           hair="blond", gk=True)
+TRAPP = dict(PSG, shirt=(110, 114, 126), pattern=None, shorts=(70, 72, 82), socks=(110, 114, 126),
+             hair="short", hair_color=(107, 74, 43), beard=True, gk=True)
+REF = dict(BAR, shirt=(26, 26, 26), pattern=None, shorts=(26, 26, 26), socks=(26, 26, 26), hair="bald", numberColor=(255, 255, 255))
 
 
 def kit(base, **kw):
     k = dict(base); k.update(kw); return k
 
 
-SUAREZ = kit(BAR, hair=(30, 22, 16))
-NEY = kit(BAR, skin=SKIN2, hair=(240, 210, 120))
-MESSI = kit(BAR, hair=(150, 90, 40))
-SERGI = kit(BAR, hair=(30, 22, 16))
-CAVANI = kit(PSG, hair=(30, 22, 16))
+SUAREZ = kit(BAR, skin=SK["tan"], hair="short", hair_color=(30, 20, 12))
+NEY = kit(BAR, skin=SK["medium"], hair="mohawk", hair_color=(60, 40, 22))
+MESSI = kit(BAR, skin=SK["light"], hair="short", hair_color=(107, 62, 30), beard=True)
+SERGI = kit(BAR, skin=SK["light"], hair="short", hair_color=(43, 27, 16))
+CAVANI = kit(PSG, skin=SK["tan"], hair="long", hair_color=(30, 20, 12), beard=True)
+KURZAWA = kit(PSG, skin=SK["medium"], hair="buzz", hair_color=(17, 17, 17))
+PSG2 = kit(PSG, skin=SK["dark"], hair="buzz", hair_color=(17, 17, 17))
+BAR2 = kit(BAR, skin=SK["light"], hair="buzz", hair_color=(60, 40, 22))
 
 # ------------------------------------------------------------ helpers ------
 _fonts = {}
@@ -90,147 +92,25 @@ def lin(t, keys):
 
 
 # ------------------------------------------------------------- chibi -------
-def chibi(d, x, y, s, k, pose="idle", t=0.0, face=1, mouth=None, num="", back=False, lift=0.0, tilt=0.0):
-    """Dibuja un personaje chibi con los pies en (x, y)."""
-    lw = max(2, int(5 * s))
-    leg, th, tw, R = 38 * s, 48 * s, 54 * s, 46 * s
-    la = ra = 0.0          # angulo piernas (desde vertical, + hacia 'face')
-    al, ar = 0.25, 0.25    # brazos (0 abajo, pi arriba)
-    bob = 0.0
-    m = mouth
-    if pose == "run":
-        ph = t * 2 * math.pi * 2.3
-        la, ra = 0.65 * math.sin(ph), -0.65 * math.sin(ph)
-        al, ar = 0.5 + 0.7 * math.sin(ph), 0.5 - 0.7 * math.sin(ph)
-        bob = -abs(math.sin(ph)) * 8 * s
-        m = m or "flat"
-    elif pose == "walk":
-        ph = t * 2 * math.pi * 1.3
-        la, ra = 0.3 * math.sin(ph), -0.3 * math.sin(ph)
-        al, ar = 0.25 + 0.3 * math.sin(ph), 0.25 - 0.3 * math.sin(ph)
-        bob = -abs(math.sin(ph)) * 4 * s
-    elif pose == "celebrate":
-        ph = t * 2 * math.pi * 2.0
-        al, ar = 2.6 + 0.25 * math.sin(ph * 2), 2.6 - 0.25 * math.sin(ph * 2)
-        bob = -abs(math.sin(ph)) * 26 * s
-        la, ra = 0.25, -0.25
-        m = m or "open"
-    elif pose == "jump":
-        la, ra = 0.7, -0.2
-        al, ar = 2.3, 2.5
-        bob = -lift * s
-        m = m or "o"
-    elif pose == "sad":
-        al, ar = 0.08, 0.08
-        bob = 2 * s
-        m = m or "sad"
-    elif pose == "kick":
-        la, ra = -0.25, 1.35
-        al, ar = 1.4, 0.9
-        m = m or "open"
-    elif pose == "dive":
-        la, ra = 0.5, 0.9
-        al, ar = 2.6, 2.9
-        bob = -lift * s
-        m = m or "o"
-    elif pose == "card":
-        al, ar = 0.2, 2.9
-        m = m or "flat"
-    elif pose == "slide":
-        la, ra = 1.2, 1.5
-        al, ar = 1.6, 1.0
-        bob = 14 * s
-        m = m or "o"
-    else:
-        ph = t * 2 * math.pi * 0.6
-        bob = math.sin(ph) * 1.5 * s
-        m = m or "smile"
+CUR = [None]
 
-    d.ellipse([x - 34 * s, y - 7 * s, x + 34 * s, y + 7 * s], fill=(0, 40, 10, 90))
-    hip = (x, y - leg + bob)
-    # piernas
-    for off, a in ((-11 * s, la), (11 * s, ra)):
-        hx = hip[0] + off * 0.6
-        fx = hx + math.sin(a) * leg * face
-        fy = hip[1] + math.cos(a) * leg
-        d.line([(hx, hip[1]), (fx, fy)], fill=INK, width=int(17 * s))
-        d.line([(hx, hip[1]), (fx, fy)], fill=k["socks"], width=int(10 * s))
-        d.ellipse([fx - 10 * s + 4 * s * face, fy - 6 * s, fx + 10 * s + 4 * s * face, fy + 6 * s], fill=INK)
-    # torso
-    top = hip[1] - th
-    x0, x1 = x - tw / 2, x + tw / 2
-    d.rounded_rectangle([x0, top, x1, hip[1] + 6 * s], radius=int(12 * s), fill=k["shirt"])
-    if k["style"] == "vstripes":
-        n = 4
-        for i in range(n):
-            if i % 2 == 1:
-                d.rectangle([x0 + tw * i / n, top + 6 * s, x0 + tw * (i + 1) / n, hip[1] - 8 * s], fill=k["stripe"])
-    elif k["style"] == "band":
-        cx = x
-        d.rectangle([cx - 12 * s, top + 3 * s, cx + 12 * s, hip[1] - 8 * s], fill=(245, 245, 245))
-        d.rectangle([cx - 8 * s, top + 3 * s, cx + 8 * s, hip[1] - 8 * s], fill=k["stripe"])
-    else:
-        d.rectangle([x0 + 4 * s, top + th * 0.45, x1 - 4 * s, top + th * 0.55], fill=k["stripe"])
-    # pantalon
-    d.rectangle([x0 + 2 * s, hip[1] - 6 * s, x1 - 2 * s, hip[1] + 8 * s], fill=k["shorts"])
-    d.rounded_rectangle([x0, top, x1, hip[1] + 8 * s], radius=int(12 * s), outline=INK, width=lw)
-    if num:
-        fs = int((30 if back else 20) * s)
-        f = font(max(8, fs))
-        cy = top + th * (0.48 if back else 0.32)
-        cxn = x if back else x + 12 * s * face
-        d.text((cxn, cy), num, font=f, fill=k["numc"], anchor="mm", stroke_width=max(1, int(2 * s)), stroke_fill=INK)
-    # brazos
-    hand = (255, 140, 30) if k["gk"] else k["skin"]
-    for side, a in ((-1, al), (1, ar)):
-        sx, sy = x + side * (tw / 2 - 5 * s), top + 10 * s
-        L = 32 * s
-        ex, ey = sx + side * math.sin(a) * L, sy + math.cos(a) * L
-        d.line([(sx, sy), (ex, ey)], fill=INK, width=int(15 * s))
-        d.line([(sx, sy), (ex, ey)], fill=k["shirt"], width=int(8 * s))
-        r = (8 if k["gk"] else 6.5) * s
-        d.ellipse([ex - r, ey - r, ex + r, ey + r], fill=hand, outline=INK, width=max(1, int(3 * s)))
-    # cabeza
-    hx = x + tilt * 20 * s
-    hy = top - R * 0.82 + (5 * s if pose == "sad" else 0)
-    d.ellipse([hx - R, hy - R, hx + R, hy + R], fill=k["skin"], outline=INK, width=lw)
-    if back:
-        d.chord([hx - R - 2, hy - R - 2, hx + R + 2, hy + R + 2], 150, 390, fill=k["hair"])
-        d.ellipse([hx - R, hy - R, hx + R, hy + R], outline=INK, width=lw)
-        return
-    # pelo
-    d.chord([hx - R - 3, hy - R - 4, hx + R + 3, hy + R * 0.6], 180 + (20 if face < 0 else 0), 360 - (20 if face > 0 else 0), fill=k["hair"])
-    d.arc([hx - R, hy - R, hx + R, hy + R], 180, 360, fill=INK, width=lw)
-    # ojos
-    ex_off = 5 * s * face
-    for side in (-1, 1):
-        cx, cy = hx + side * 17 * s + ex_off, hy + 4 * s
-        if m == "sad":
-            cy += 3 * s
-        d.ellipse([cx - 11 * s, cy - 13 * s, cx + 11 * s, cy + 13 * s], fill=(255, 255, 255), outline=INK, width=max(1, int(3 * s)))
-        px, py = cx + 4 * s * face, cy + (4 * s if m == "sad" else 1 * s)
-        d.ellipse([px - 5.5 * s, py - 6 * s, px + 5.5 * s, py + 6 * s], fill=INK)
-        d.ellipse([px - 1 * s, py - 4 * s, px + 2.5 * s, py - 0.5 * s], fill=(255, 255, 255))
-        if m == "sad":
-            d.line([(cx - 10 * s, cy - 18 * s + side * 3 * s), (cx + 10 * s, cy - 18 * s - side * 3 * s)], fill=INK, width=max(1, int(3 * s)))
-    # mejillas
-    for side in (-1, 1):
-        cx, cy = hx + side * 30 * s + ex_off, hy + 22 * s
-        d.ellipse([cx - 7 * s, cy - 4 * s, cx + 7 * s, cy + 4 * s], fill=(245, 150, 150))
-    # boca
-    mx, my = hx + ex_off, hy + 28 * s
-    bw = max(1, int(3 * s))
-    if m == "open":
-        d.ellipse([mx - 11 * s, my - 7 * s, mx + 11 * s, my + 12 * s], fill=(90, 20, 30), outline=INK, width=bw)
-        d.ellipse([mx - 6 * s, my + 3 * s, mx + 6 * s, my + 10 * s], fill=(230, 90, 100))
-    elif m == "sad":
-        d.arc([mx - 10 * s, my + 1 * s, mx + 10 * s, my + 14 * s], 200, 340, fill=INK, width=bw)
-    elif m == "o":
-        d.ellipse([mx - 5 * s, my - 2 * s, mx + 5 * s, my + 9 * s], fill=(90, 20, 30), outline=INK, width=bw)
-    elif m == "flat":
-        d.line([(mx - 8 * s, my + 4 * s), (mx + 8 * s, my + 4 * s)], fill=INK, width=bw)
-    else:
-        d.arc([mx - 11 * s, my - 8 * s, mx + 11 * s, my + 8 * s], 20, 160, fill=INK, width=bw)
+
+def chibi(d, x, y, s, k, pose="idle", t=0.0, face=1, mouth=None, num="", back=False, lift=0.0, tilt=0.0, action=None):
+    """Envoltorio: personaje estilo 93:20. s=1 -> 175 px de alto."""
+    mp = {"jump": "header", "card": "idle"}
+    p = mp.get(pose, pose)
+    if action is None:
+        action = {"kick": 1.0, "dive": 1.0, "header": 0.6}.get(p, 0.0)
+    mood = {"open": "happy" if pose == "celebrate" else "shout", "sad": "sad", "o": "worried",
+            "flat": "neutral", "smile": "happy"}.get(mouth or "", None)
+    if mood is None:
+        mood = {"celebrate": "happy", "sad": "sad", "kick": "shout", "dive": "worried", "jump": "shout"}.get(pose, "neutral")
+    kk = dict(k, number=(num or None))
+    draw_character(CUR[0], x, y, 212 * s, kk, skin=k["skin"], hair=k["hair"], hair_color=k["hair_color"],
+                   beard=k["beard"], pose=p, mood=mood, action=action, facing="right" if face >= 0 else "left",
+                   frame=t * 24, lift=lift * s if pose in ("jump", "dive") else 0, back=back,
+                   holding="redcard" if pose == "card" else None,
+                   gloves=(255, 140, 30) if k["gk"] else None, head_tilt_extra=tilt * 25)
 
 
 def ball(d, x, y, r, rot=0.0):
@@ -596,7 +476,7 @@ def final_core(img, d, r, show_net=True):
     # defensas
     for i, (xa, xb) in enumerate(((560, 700), (480, 640))):
         xx = path(r, [(-2.0, xa), (-0.1, xb)])
-        chibi(d, xx, GROUND - 40 + i * 70, 1.25, PSG, "run" if r < 0 else "sad", r + i * 0.3, 1, num=str(3 + i * 2))
+        chibi(d, xx, GROUND - 40 + i * 70, 1.25, PSG2 if i else KURZAWA, "run" if r < 0 else "sad", r + i * 0.3, 1, num=str(3 + i * 2))
     chibi(d, trx, GROUND - 20, 1.3, TRAPP, "dive" if r > -0.25 else "idle", r, -1, lift=tr_l, num="1")
     # Neymar (centro)
     ny_pose = "kick" if -1.85 < r < -1.45 else ("run" if r < 0 else "celebrate")
@@ -714,8 +594,8 @@ def sc_suarez(img, d, lt, S):
     lift = 60 * math.sin(math.pi * clamp((r + 0.6) / 0.6)) if -0.6 < r < 0 else 0
     sx = path(r, [(-2.0, 380), (-0.5, 650), (0.3, 660), (2.0, 300)])
     pose = "run" if r < -0.6 else ("jump" if r < 0.05 else "celebrate")
-    chibi(d, 820, GROUND - 30, 1.25, PSG, "run" if r < 0 else "sad", lt, -1, num="2")
-    chibi(d, path(r, [(-0.3, 870), (0.2, 850)]), GROUND - 10, 1.3, TRAPP, "dive" if r > -0.1 else "idle", lt, -1, lift=clamp((r + 0.1) / 0.3) * 50, num="1")
+    chibi(d, 820, GROUND - 30, 1.25, PSG2, "run" if r < 0 else "sad", lt, -1, num="2")
+    chibi(d, path(r, [(-0.3, 870), (0.2, 850)]), GROUND - 10, 1.3, TRAPP, "dive" if r > -0.1 else "idle", lt, -1, lift=clamp((r + 0.1) / 0.3) * 50, num="1", action=clamp((r + 0.1) / 0.3))
     chibi(d, sx, GROUND + 40, 1.5, SUAREZ, pose, lt, 1 if r < 0.3 else -1, num="9", lift=lift, tilt=0.4 if -0.4 < r < 0 else 0)
     if r < hit:
         bx, by = arc(r, hit - 1.0, hit, (-40, 1250), (sx + 20, GROUND - 260 - lift * 1.5), 260)
@@ -736,9 +616,9 @@ def sc_kurzawa(img, d, lt, S):
     b = S["beat"]; r = lt - b
     net_side(d, GX, GROUND, 300, 175, math.exp(-((r - 0.12) / 0.18) ** 2) if r > -0.02 else 0, GROUND - 60)
     # pase raso de Barca
-    chibi(d, path(r, [(-2, 120), (-1.0, 230)]), GROUND + 60, 1.35, BAR, "kick" if -1.15 < r < -0.8 else "run", lt, 1, num="8")
+    chibi(d, path(r, [(-2, 120), (-1.0, 230)]), GROUND + 60, 1.35, BAR2, "kick" if -1.15 < r < -0.8 else "run", lt, 1, num="8")
     kx = path(r, [(-2, 520), (-0.35, 690)])
-    chibi(d, kx, GROUND + 10, 1.45, PSG, "slide" if r > -0.35 else "run", lt, 1, num="20", mouth="o")
+    chibi(d, kx, GROUND + 10, 1.45, KURZAWA, "slide" if r > -0.35 else "run", lt, 1, num="20", mouth="o")
     chibi(d, path(r, [(-0.2, 880), (0.2, 900)]), GROUND - 20, 1.3, TRAPP, "dive" if r > -0.15 else "idle", lt, -1, lift=10, num="1")
     chibi(d, path(r, [(-2, 330), (0.0, 600), (1.5, 420)]), GROUND - 70, 1.15, SUAREZ, "run" if r < 0 else "celebrate", lt, 1, num="9")
     if r < -0.9:
@@ -770,7 +650,8 @@ def penalty(img, d, lt, b, taker_kit, num, keeper_kit, dive_dir, shot_to):
     else:
         u = clamp((r + 0.2) / 0.35)
         kx, ky, pose, lift = tk + dive_dir * 230 * ease_io(u), GB, "dive", 60 * math.sin(math.pi * min(u, 1) * 0.8)
-    chibi(d, kx, ky, 1.25, keeper_kit, pose, lt, 1, num="1", lift=lift, tilt=dive_dir * 0.6 if pose == "dive" else 0)
+    chibi(d, kx, ky, 1.25, keeper_kit, pose, lt, -dive_dir if pose == "dive" else 1, num="1", lift=lift,
+          action=clamp((r + 0.2) / 0.35) if pose == "dive" else None)
     # balon
     shot = b - 0.35
     if lt < shot:
@@ -807,9 +688,9 @@ def sc_cavani(img, d, lt, S):
     b = S["beat"]; r = lt - b
     net_side(d, GX, GROUND, 300, 175, math.exp(-((r - 0.1) / 0.18) ** 2) if r > -0.02 else 0, GROUND - 255)
     cx = path(r, [(-2, 420), (-0.4, 620)])
-    chibi(d, path(r, [(-2, 640), (-0.2, 760)]), GROUND - 50, 1.25, BAR, "run" if r < 0 else "sad", lt, -1, num="3")
+    chibi(d, path(r, [(-2, 640), (-0.2, 760)]), GROUND - 50, 1.25, BAR2, "run" if r < 0 else "sad", lt, -1, num="3")
     chibi(d, cx, GROUND + 40, 1.55, CAVANI, "kick" if -0.5 < r < -0.1 else ("run" if r < 0 else "celebrate"), lt, 1, num="9")
-    chibi(d, path(r, [(-0.25, 870), (0.1, 845)]), GROUND - 10, 1.3, TER, "dive" if r > -0.2 else "idle", lt, -1, lift=clamp((r + 0.2) / 0.3) * 80, num="1")
+    chibi(d, path(r, [(-0.25, 870), (0.1, 845)]), GROUND - 10, 1.3, TER, "dive" if r > -0.2 else "idle", lt, -1, lift=clamp((r + 0.2) / 0.3) * 80, num="1", action=clamp((r + 0.2) / 0.3))
     if r < -0.35:
         bx, by = arc(r, -1.3, -0.35, (200, 1150), (cx + 40, GROUND), 200)
     elif r < 0:
@@ -838,7 +719,7 @@ def sc_neyfk(img, d, lt, S):
         chibi(d, 610 + i * 22, GROUND - 10 + i * 18, 1.3, PSG, "jump" if -0.6 < r < -0.2 else "idle", lt, -1, num=str(4 + i), lift=40)
     nx = path(r, [(shot - 0.9, 160), (shot, 290)])
     chibi(d, nx, GROUND + 60, 1.5, NEY, "idle" if r < shot - 0.9 else ("run" if r < shot else ("kick" if r < shot + 0.35 else "celebrate")), lt, 1, num="11")
-    chibi(d, path(r, [(-0.3, 865), (0.1, 860)]), GROUND - 10, 1.3, TRAPP, "dive" if r > -0.25 else "idle", lt, -1, lift=clamp((r + 0.25) / 0.3) * 90, num="1")
+    chibi(d, path(r, [(-0.3, 865), (0.1, 860)]), GROUND - 10, 1.3, TRAPP, "dive" if r > -0.25 else "idle", lt, -1, lift=clamp((r + 0.25) / 0.3) * 90, num="1", action=clamp((r + 0.25) / 0.3))
     if r < shot:
         bx, by = 330, GROUND + 50
     elif r < 0:
@@ -899,7 +780,7 @@ def sc_outro(img, d, lt, S):
     for i, x in enumerate(xs):
         chibi(d, x, 1640 + (i % 2) * 50, 1.45, kits[i], "celebrate", lt + i * 0.21, 1 if x < 540 else -1, num=nums[i])
     for i, x in enumerate((240, 840)):
-        chibi(d, x, 1290, 0.95, PSG, "sad", lt, 1, num=str(7 + i))
+        chibi(d, x, 1340, 0.95, PSG2, "sad", lt, 1, num=str(7 + i))
     SB(6, 1, "FINAL")
     fx = {"confetti": lt + 3, "jump": True}
     fx["post"] = lambda im: (pop(im, "GLOBAL 6-5", lt, W / 2, 400, 110, fill=(255, 255, 255), t_in=0.05),
@@ -977,12 +858,14 @@ def render_frame(tl, t, rain_clock):
     img = bg.copy()
     d = ImageDraw.Draw(img, "RGBA")
     _SB[0] = None
+    CUR[0] = img
     fx = SCENES[S["id"]](img, d, lt, S) or {}
     if fx.get("jump"):
         # gradas saltando (alternar fondo) -> se redibuja debajo
         if int(t * 8) % 2 == 0:
             img2 = bgj.copy()
             d2 = ImageDraw.Draw(img2, "RGBA")
+            CUR[0] = img2
             # hay que volver a dibujar la escena encima del otro fondo
             fx = SCENES[S["id"]](img2, d2, lt, S) or {}
             img = img2
