@@ -1,5 +1,5 @@
 import guion from "../../guiones/reel-diamante-natural.json";
-import { VOICE_FRAMES } from "./voiceover.generated";
+import { PHRASES, VOICE_FRAMES } from "./voiceover.generated";
 
 export type LineId = keyof typeof VOICE_FRAMES;
 
@@ -9,18 +9,36 @@ export const VOICE_LEAD = 6;
 const VOICE_TAIL = 12;
 export const T = 10;
 
+const weight = (w: string) => w.replace(/[^\p{L}\d]/gu, "").length + 2 + (/[.?!,]$/.test(w) ? 3 : 0);
+
 /**
- * Frame (inside the scene) when `word` is spoken, using the same
- * length-weighted spread as the captions so beats land with the subtitles.
+ * Words of a line and the frame (relative to the voice clip) each one starts.
+ * Phrase boundaries come from the real take; inside a phrase, words are spread
+ * by length.
  */
-export const wordAt = (id: LineId, voice: number, word: string) => {
-  const words = LINES[id].split(/\s+/).filter(Boolean);
-  const weights = words.map((w) => w.replace(/[^\p{L}\d]/gu, "").length + 2 + (/[.?!,]$/.test(w) ? 4 : 0));
-  const total = weights.reduce((a, b) => a + b, 0);
+export const lineWords = (id: LineId): { words: string[]; starts: number[] } => {
+  const words: string[] = [];
+  const starts: number[] = [];
+  for (const [a, b, text] of PHRASES[id]) {
+    const ws = text.split(/\s+/).filter(Boolean);
+    const wts = ws.map(weight);
+    const total = wts.reduce((x, y) => x + y, 0);
+    let acc = 0;
+    ws.forEach((w, i) => {
+      words.push(w);
+      starts.push(a + ((b - a) * acc) / total);
+      acc += wts[i];
+    });
+  }
+  return { words, starts };
+};
+
+/** Frame inside the scene when `word` is spoken (first occurrence). */
+export const wordAt = (id: LineId, _voice: number, word: string) => {
+  const { words, starts } = lineWords(id);
   const idx = words.indexOf(word);
   if (idx < 0) throw new Error(`"${word}" not in ${id}`);
-  const before = weights.slice(0, idx).reduce((a, b) => a + b, 0);
-  return VOICE_LEAD + Math.round((before / total) * voice);
+  return VOICE_LEAD + Math.round(starts[idx]);
 };
 
 const fit = (base: number, voice: number) => Math.max(base, VOICE_LEAD + voice + VOICE_TAIL);

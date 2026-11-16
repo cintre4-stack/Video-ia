@@ -170,27 +170,18 @@ export const Counter: React.FC<{
 };
 
 /**
- * TikTok-style captions: the narration line split into chunks of up to 3
- * words; the word being said pops in gold. Word timing is spread across the
- * clip by syllable-ish length (characters).
+ * TikTok-style captions: chunks of up to 3 words (breaking after sentence
+ * punctuation); the word being said pops in gold.
  */
-export const Captions: React.FC<{ text: string; from: number; dur: number; top?: number }> = ({
-  text,
+export const Captions: React.FC<{ words: string[]; starts: number[]; from: number; dur: number; top?: number }> = ({
+  words,
+  starts,
   from,
   dur,
   top = LAYOUT.captionTop,
 }) => {
   const frame = useCurrentFrame() - from;
   if (frame < 0 || frame > dur + 8) return null;
-  const words = text.split(/\s+/).filter(Boolean);
-  const weights = words.map((w) => w.replace(/[^\p{L}\d]/gu, "").length + 2 + (/[.?!,]$/.test(w) ? 4 : 0));
-  const total = weights.reduce((a, b) => a + b, 0);
-  const starts: number[] = [];
-  let acc = 0;
-  for (const w of weights) {
-    starts.push((acc / total) * dur);
-    acc += w;
-  }
   let current = 0;
   for (let i = 0; i < words.length; i++) if (frame >= starts[i]) current = i;
 
@@ -217,7 +208,7 @@ export const Captions: React.FC<{ text: string; from: number; dur: number; top?:
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center",
-        gap: "0 22px",
+        gap: "0 34px",
         fontFamily: display,
         fontSize: 84,
         lineHeight: 1.1,
@@ -227,7 +218,7 @@ export const Captions: React.FC<{ text: string; from: number; dur: number; top?:
       {chunk.map((i) => {
         const active = i === current;
         const age = frame - starts[i];
-        const pop = active ? 1 + 0.18 * Math.max(0, 1 - age / 6) : 1;
+        const pop = active ? 1 + 0.1 * Math.max(0, 1 - age / 6) : 1;
         return (
           <span
             key={i}

@@ -1,0 +1,13 @@
+{
+  "source": "voz/diamante-marcos-eleven-v4.mp3",
+  "note": "Toma de ElevenLabs (voz Marcos, eleven_v4) con etiquetas de tono. Tiempos en segundos de cada frase, medidos por pausas (silencedetect).",
+  "phrases": {
+    "s01": [[0.0, 2.53, "Estos dos diamantes son idénticos."], [3.23, 5.72, "Pero uno vale hasta diez veces más."], [6.29, 6.69, "¿Por qué?"]],
+    "s02": [[7.16, 8.41, "Los dos son carbono puro."], [8.79, 10.83, "Ni un experto los distingue a simple vista."]],
+    "s03": [[11.36, 12.16, "La diferencia"], [12.39, 13.11, "es su historia."], [13.72, 16.99, "Este nació hace más de mil millones de años,"], [17.27, 19.75, "a ciento cincuenta kilómetros bajo tierra."]],
+    "s04": [[20.21, 22.66, "Este otro se hizo en un laboratorio, en semanas."], [23.01, 24.95, "Y se pueden fabricar sin límite."]],
+    "s05": [[25.44, 27.26, "Por eso su precio no para de caer."], [27.73, 28.92, "Intenta revenderlo..."], [29.21, 30.32, "casi nadie te lo compra."]],
+    "s06": [[30.80, 32.48, "Un diamante natural es escaso,"], [32.84, 34.00, "guarda mejor su valor"], [34.32, 34.99, "y se hereda."], [35.51, 37.72, "Es un pedazo de la historia de la Tierra."]],
+    "s07": [[38.22, 38.51, "¿Y tú,"], [38.90, 40.08, "cuál le darías a quien amas?"], [40.49, 41.64, "Te leo en comentarios."]]
+  }
+}

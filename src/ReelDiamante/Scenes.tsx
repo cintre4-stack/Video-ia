@@ -3,7 +3,7 @@ import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } fr
 import { C } from "./theme";
 import { Chibi, GemCharacter, Loupe, Pedestal, Sparkle, Stage } from "./Toon3D";
 import { Backdrop, Captions, Chip, Counter, PriceTag, Small, Title } from "./Ui";
-import { LINES, VOICE_LEAD, wordAt } from "./timeline";
+import { LineId, lineWords, VOICE_LEAD, wordAt } from "./timeline";
 
 type SceneProps = { voice: number };
 
@@ -12,8 +12,8 @@ const FOOT = 1.38;
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const lerp = (f: number, a: number, b: number, from: number, to: number) => interpolate(f, [a, b], [from, to], clamp);
 
-const Caps: React.FC<{ id: keyof typeof LINES; voice: number }> = ({ id, voice }) => (
-  <Captions text={LINES[id]} from={VOICE_LEAD} dur={voice} />
+const Caps: React.FC<{ id: LineId; voice: number }> = ({ id, voice }) => (
+  <Captions {...lineWords(id)} from={VOICE_LEAD} dur={voice} />
 );
 
 /* 1 · Gancho: dos diamantes idénticos, uno vale x10 ------------------ */
