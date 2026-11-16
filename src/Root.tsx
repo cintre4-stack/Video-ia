@@ -1,4 +1,5 @@
-import { Composition, Folder } from "remotion";
+import { Composition, Folder, Still } from "remotion";
+import { AvatarChefBolo } from "./ReelLasagna/Avatar";
 import { ReelAnfield } from "./ReelAnfield/ReelAnfield";
 import { REEL_ANFIELD_FRAMES } from "./ReelAnfield/timeline";
 import { ReelLasagna } from "./ReelLasagna/ReelLasagna";
@@ -33,6 +34,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
       />
+      <Still id="Avatar-ChefBolo" component={AvatarChefBolo} width={1080} height={1080} />
     </Folder>
   );
 };

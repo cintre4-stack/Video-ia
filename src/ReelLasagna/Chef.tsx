@@ -20,7 +20,10 @@ export const Chef: React.FC<{
   /** Mirada: -1 izquierda, 1 derecha; y -1 abajo, 1 arriba. */
   look?: [number, number];
   happy?: boolean;
-}> = ({ position = [0, 0.62, -1.75], scale = 1, action = "idle", mouth = 0, rightTool, leftTool, look = [0, -0.3], happy }) => {
+  /** Sonrisa abierta (para retratos/fotos fijas). */
+  smile?: boolean;
+  apron?: boolean;
+}> = ({ position = [0, 0.62, -1.75], scale = 1, action = "idle", mouth = 0, rightTool, leftTool, look = [0, -0.3], happy, smile, apron = true }) => {
   const f = useCurrentFrame();
 
   // Entrada con rebote al empezar la escena.
@@ -88,23 +91,23 @@ export const Chef: React.FC<{
           <meshStandardMaterial color={C.chef} roughness={0.55} />
         </mesh>
         {/* Barriga más clara */}
-        <mesh position={[0, -0.25, 0.42]} scale={[0.55, 0.5, 0.35]}>
+        <mesh position={[0, -0.45, 0.36]} scale={[0.55, 0.42, 0.35]}>
           <sphereGeometry args={[0.8, 32, 32]} />
           <meshStandardMaterial color="#FFD08A" roughness={0.6} />
         </mesh>
         {/* Delantal */}
-        <mesh position={[0, -0.62, 0.48]} rotation={[-0.5, 0, 0]}>
+        {apron && <mesh position={[0, -0.62, 0.48]} rotation={[-0.5, 0, 0]}>
           <boxGeometry args={[0.8, 0.5, 0.06]} />
           <meshStandardMaterial color={C.cream} roughness={0.8} />
-        </mesh>
+        </mesh>}
         {/* Pajarita roja */}
         {[-1, 1].map((s) => (
-          <mesh key={s} position={[s * 0.13, -0.5, 0.66]} rotation={[0, 0, (s * -Math.PI) / 2]}>
+          <mesh key={s} position={[s * 0.13, -0.5, 0.72]} rotation={[0, 0, (s * -Math.PI) / 2]}>
             <coneGeometry args={[0.1, 0.24, 16]} />
             <meshStandardMaterial color={C.tomato} roughness={0.5} />
           </mesh>
         ))}
-        <mesh position={[0, -0.5, 0.7]}>
+        <mesh position={[0, -0.5, 0.77]}>
           <sphereGeometry args={[0.06, 16, 16]} />
           <meshStandardMaterial color={C.tomatoDark} roughness={0.5} />
         </mesh>
@@ -145,10 +148,23 @@ export const Chef: React.FC<{
           </mesh>
         ))}
         {/* Boca */}
+        {smile ? (
+          <group position={[0, -0.16, 0.7]} rotation={[-0.25, 0, 0]}>
+            <mesh>
+              <circleGeometry args={[0.19, 40, Math.PI, Math.PI]} />
+              <meshStandardMaterial color="#7A1E1E" roughness={0.5} />
+            </mesh>
+            <mesh position={[0, -0.12, 0.005]} scale={[1, 0.55, 1]}>
+              <circleGeometry args={[0.11, 32]} />
+              <meshStandardMaterial color="#FF6F7D" roughness={0.6} />
+            </mesh>
+          </group>
+        ) : (
         <mesh position={[0, -0.21, 0.69]} scale={[0.14 + mouthOpen * 0.03, 0.04 + mouthOpen * 0.11, 0.08]}>
           <sphereGeometry args={[1, 24, 24]} />
           <meshStandardMaterial color="#7A1E1E" roughness={0.5} />
         </mesh>
+        )}
 
         {/* Gorro de chef */}
         <group position={[0, 0.78, -0.02]} rotation={[-0.08, 0, Math.sin(f * 0.12) * 0.04]}>
