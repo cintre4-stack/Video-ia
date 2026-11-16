@@ -1,0 +1,15 @@
+{
+  "title": "Reel Lasaña · Chef Bolo cocina una lasaña boloñesa paso a paso",
+  "note": "Personaje original (Chef Bolo). Texto para Piper. Cantidades para una fuente de 20x30 cm, 6 raciones.",
+  "lines": [
+    ["s01", "¡Lasaña casera en seis pasos! Quédate hasta el final, que viene lo mejor."],
+    ["s02", "Paso uno. Pica una cebolla, una zanahoria y dos dientes de ajo. Sofríe diez minutos a fuego medio."],
+    ["s03", "Paso dos. Añade quinientos gramos de carne picada y dórala bien. Sal y pimienta."],
+    ["s04", "Paso tres. Echa cuatrocientos gramos de tomate triturado y una pizca de orégano. Deja que reduzca veinte minutos."],
+    ["s05", "Paso cuatro. La bechamel. Cincuenta gramos de mantequilla, cincuenta de harina y medio litro de leche. Remueve sin parar."],
+    ["s06", "Paso cinco. Monta por capas. Pasta, carne y bechamel. Y repite hasta arriba."],
+    ["s07", "Paso seis. Cubre con queso rallado y al horno. Ciento ochenta grados, treinta minutos."],
+    ["s08", "¡Y lista! Déjala reposar cinco minutos antes de cortar. Guárdate la receta y dime qué cocino mañana."]
+  ],
+  "speed": {}
+}
