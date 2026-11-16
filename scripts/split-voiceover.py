@@ -1,6 +1,9 @@
 """Split a single-take narration MP3 into per-line clips at its longest pauses.
 
-    python3 scripts/split-voiceover.py take.mp3 <lines> <out_dir> <voiceover.generated.ts>
+    python3 scripts/split-voiceover.py take.mp3 <lines> <out_dir> <voiceover.generated.ts> [cuts]
+
+`cuts` (optional) is a comma-separated list of cut points in seconds, for takes
+where the pauses between lines are no longer than the pauses inside them.
 
 Finds pauses with ffmpeg silencedetect, cuts at the middle of the (lines-1)
 longest ones, trims and normalizes each clip to s01.mp3, s02.mp3, ... and
@@ -31,9 +34,13 @@ def main() -> None:
     starts = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", log)]
     ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
     gaps = sorted(zip(starts, ends), key=lambda g: g[1] - g[0], reverse=True)[: n - 1]
-    if len(gaps) < n - 1:
+    if len(gaps) < n - 1 and len(sys.argv) <= 5:
         sys.exit(f"Only {len(gaps)} pauses found, need {n - 1}")
     cuts = sorted((a + b) / 2 for a, b in gaps)
+    if len(sys.argv) > 5:
+        cuts = [float(c) for c in sys.argv[5].split(",")]
+        if len(cuts) != n - 1:
+            sys.exit(f"Need {n - 1} cuts, got {len(cuts)}")
     total = float(subprocess.check_output(
         ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", src]).decode())
     bounds = [0.0, *cuts, total]

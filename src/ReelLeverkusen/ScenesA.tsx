@@ -132,8 +132,8 @@ export const SceneHook: React.FC = () => {
 
 /* ───────────── 2. REBOBINADO: 2002, TRES VECES SEGUNDOS ───────────── */
 const LOSSES_2002 = [
-  { label: "BUNDESLIGA", detail: "2º · SE ESCAPA AL FINAL", at: 0.36 },
-  { label: "COPA", detail: "FINAL PERDIDA", at: 0.58 },
+  { label: "BUNDESLIGA", detail: "2º · SE ESCAPA AL FINAL", at: 0.42 },
+  { label: "COPA", detail: "FINAL PERDIDA", at: 0.62 },
   { label: "CHAMPIONS", detail: "FINAL PERDIDA", at: 0.78 },
 ];
 export const Scene2002: React.FC = () => {
@@ -193,7 +193,7 @@ export const Scene2002: React.FC = () => {
             </div>
           );
         })}
-        <Caption name="Un mes" delay={beat("s02", 0.86)} accentWords="mes" accent={K.gold} style={{ top: 870, fontSize: 80 }}>
+        <Caption name="Un mes" delay={beat("s02", 0.85)} accentWords="mes" accent={K.gold} style={{ top: 870, fontSize: 80 }}>
           Todo en un mes
         </Caption>
         <Character {...BALLACK} x={540} y={G} height={300} pose="sad" mood="sad" />
@@ -211,7 +211,7 @@ export const Scene2002: React.FC = () => {
 /* ───────────── 3. ARRIBA, EL BAYERN: 11 LIGAS SEGUIDAS ───────────── */
 export const SceneBayern11: React.FC = () => {
   const frame = useCurrentFrame();
-  const start = beat("s03", 0.3);
+  const start = beat("s03", 0.5);
   const count = Math.max(0, Math.min(11, Math.floor((frame - start) / 3) + 1));
   return (
     <AbsoluteFill>
@@ -248,7 +248,7 @@ export const SceneBayern11: React.FC = () => {
 /* ───────────── 4. OCT 2022: EN DESCENSO, LLEGA XABI ───────────── */
 export const SceneXabi: React.FC = () => {
   const frame = useCurrentFrame();
-  const arrive = beat("s04", 0.68);
+  const arrive = beat("s04", 0.74);
   const here = frame >= arrive;
   const table = interpolate(frame, [beat("s04", 0.3), beat("s04", 0.3) + 10], [0, 1], { ...clamp, easing: Easing.bezier(0.16, 1, 0.3, 1) });
   const xx = interpolate(frame, [arrive - 10, arrive + 22], [1180, 600], { ...clamp, easing: Easing.out(Easing.quad) });

@@ -1,6 +1,7 @@
 # Narración · Reel Leverkusen 2023/24 (“Neverkusen” → campeón invicto)
 
-Voz: MARCOS PROFESIONAL (ElevenLabs, `wfwG5A1z7UhZfYQ68gAv`), modelo eleven_v4.
+Voz montada: "Marcos The Agent" (ElevenLabs, eleven_v4), toma única del usuario.
+Voz recomendada para el estilo: MARCOS PROFESIONAL (`wfwG5A1z7UhZfYQ68gAv`).
 Pegar el bloque entero en una sola toma; los `[pause]` separan las 12 frases.
 
 ```
@@ -11,7 +12,8 @@ Con el MP3 de una sola toma:
 
     python3 scripts/split-voiceover.py marcos.mp3 12 public/voiceover/leverkusen src/ReelLeverkusen/voiceover.generated.ts
 
-Corta en los 11 silencios más largos y regenera las duraciones; los goles y sellos
+Corta en los 11 silencios más largos (o en los cortes que se pasen como 5º argumento; para la toma de Marcos The Agent:
+`6.23,13.54,17.17,22.83,27.12,32.31,35.48,41.92,47.80,52.06,57.22`) y regenera las duraciones; los goles y sellos
 están atados a fracciones de cada frase (`beat()` en timeline.ts), así que se resincroniza solo.
 
 | # | Escena | Beat clave |

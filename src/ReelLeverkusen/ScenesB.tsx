@@ -216,7 +216,7 @@ export const SceneWirtz: React.FC = () => {
 /* ───────────── 10. ¡CAMPEONES! ───────────── */
 export const SceneChampions: React.FC = () => {
   const frame = useCurrentFrame();
-  const sub = beat("s10", 0.35);
+  const sub = beat("s10", 0.25);
   return (
     <AbsoluteFill>
       <Stadium crowd={BAYARENA_CROWD} hype={1} />
@@ -243,12 +243,12 @@ const STATS: { k: string; v: string; at: number; hl?: boolean }[] = [
   { k: "PARTIDOS", v: "34", at: 0.05 },
   { k: "VICTORIAS", v: "28", at: 0.18 },
   { k: "EMPATES", v: "6", at: 0.26 },
-  { k: "DERROTAS", v: "0", at: 0.36, hl: true },
+  { k: "DERROTAS", v: "0", at: 0.31, hl: true },
   { k: "PUNTOS", v: "90", at: 0.5 },
 ];
 export const SceneStats: React.FC = () => {
   const frame = useCurrentFrame();
-  const zero = beat("s11", 0.36);
+  const zero = beat("s11", 0.31);
   return (
     <AbsoluteFill>
       <Stadium crowd={BAYARENA_CROWD} hype={0.8} />
@@ -300,7 +300,7 @@ export const SceneStats: React.FC = () => {
           );
         })}
       </div>
-      <Caption name="Nadie" delay={beat("s11", 0.6)} accentWords="Nadie" accent={K.gold} style={{ top: 880, fontSize: 74 }}>
+      <Caption name="Nadie" delay={beat("s11", 0.52)} accentWords="Nadie" accent={K.gold} style={{ top: 880, fontSize: 74 }}>
         Nadie lo había hecho en Alemania
       </Caption>
       <Character {...FRIMPONG} x={230} y={G} height={280} pose="celebrate" mood="happy" />
@@ -318,8 +318,8 @@ export const SceneStats: React.FC = () => {
 /* ───────────── 12. CTA: NEVERKUSEN... NUNCA MÁS ───────────── */
 export const SceneCta: React.FC = () => {
   const frame = useCurrentFrame();
-  const swap = beat("s12", 0.12);
-  const q = beat("s12", 0.4);
+  const swap = beat("s12", 0.18);
+  const q = beat("s12", 0.36);
   const sub = interpolate(frame, [beat("s12", 0.75), beat("s12", 0.75) + 10], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ background: `radial-gradient(circle at 50% 40%, #B0141B 0%, #1A0304 75%)` }}>
