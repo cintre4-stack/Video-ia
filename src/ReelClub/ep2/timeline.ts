@@ -7,33 +7,35 @@ export const LEAD = 6;
 export type SceneId2 = "hook" | "porteria" | "nombre" | "problema" | "once" | "rival" | "meta" | "cta";
 
 /**
- * Narration: public/voiceover/club-ep2/voz.mp3 (one track). `a`/`end` = seconds in that track
+ * Narration: public/voiceover/club-ep2-eleven/voz.mp3 (ElevenLabs, one track). `a`/`end` = seconds in that track
  * where each line starts/ends. To swap in a real recording, replace voz.mp3, update these
  * anchors and BEATS, and rerun scripts/voice-envelope.py.
  */
 const SCENE_DEFS: { id: SceneId2; a: number; end: number; caption: string }[] = [
-  { id: "hook", a: 0.0, end: 2.74, caption: "¡Lo LOGRAMOS! Recaudamos $280..." },
-  { id: "porteria", a: 3.09, end: 6.13, caption: "...y solo alcanzó para la PORTERÍA. ¡Pero mírala qué BONITA!" },
-  { id: "nombre", a: 6.48, end: 11.53, caption: "El equipo ya tiene nombre... ¡LOS PAPOIS! Gracias a @SoyDamiánblox" },
-  { id: "problema", a: 11.88, end: 13.77, caption: "Pero hay un problema... NO tengo jugadores." },
-  { id: "once", a: 14.12, end: 17.67, caption: "Los primeros 11 COMENTARIOS... ¡serán el ONCE TITULAR!" },
-  { id: "rival", a: 18.02, end: 22.47, caption: "Próximo video: vs un equipo de TERCERA DIVISIÓN. ¡A ASCENDER!" },
-  { id: "meta", a: 22.82, end: 26.72, caption: "La meta sigue: $2.400 para el club." },
-  { id: "cta", a: 27.07, end: 28.55, caption: "¡COMENTA YA y entra al ONCE!" },
+  { id: "hook", a: 0.0, end: 3.83, caption: "¡Lo LOGRAMOS! ¡Recaudamos $280!" },
+  { id: "porteria", a: 4.09, end: 8.68, caption: "...y solo alcanzó para la PORTERÍA. Pero mírala... ¡qué BONITA!" },
+  { id: "nombre", a: 9.2, end: 15.37, caption: "El equipo ya tiene nombre... ¡LOS PAPOIS! Gracias a @SoyDamiánblox" },
+  { id: "problema", a: 16.0, end: 18.93, caption: "Pero hay un problema... no tengo JUGADORES." },
+  { id: "once", a: 19.37, end: 23.81, caption: "Los primeros 11 COMENTARIOS... ¡serán el ONCE TITULAR!" },
+  { id: "rival", a: 24.2, end: 29.47, caption: "En el próximo video: vs TERCERA DIVISIÓN. ¡Para ASCENDER!" },
+  { id: "meta", a: 29.9, end: 33.5, caption: "La meta sigue: $2.400 para las instalaciones." },
+  { id: "cta", a: 33.94, end: 35.85, caption: "¡COMENTA YA... y entra al ONCE!" },
 ];
 
 /** Key words, in seconds of the narration track. */
 export const BEATS = {
-  goal: 4.1, // "...para la portería"
-  papois: 8.84, // "¡Los Papois!"
-  thanks: 10.53, // "Gracias a..."
-  titular: 15.9, // "¡serán el once titular!"
-  ascend: 21.88, // "¡Para ascender!"
-  metaNum: 24.69, // "dos mil cuatrocientos"
+  recaud: 1.33, // "Recaudamos doscientos ochenta dólares"
+  goal: 5.6, // "...para la portería"
+  papois: 11.25, // "¡LOS PAPOIS!"
+  thanks: 12.75, // "Gracias a Soy Damián Blox..."
+  jugadores: 17.68, // "no tengo jugadores"
+  titular: 22.3, // "¡serán el once titular!"
+  ascend: 28.67, // "¡Para ascender!"
+  metaNum: 30.85, // "dos mil cuatrocientos"
 };
 
 /** Hold after the last word before the reel ends. */
-const END_HOLD = 110;
+const END_HOLD = 100;
 
 export type Scene2 = (typeof SCENE_DEFS)[number] & { start: number; dur: number; index: number; vlen: number };
 

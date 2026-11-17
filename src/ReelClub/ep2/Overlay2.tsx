@@ -70,8 +70,9 @@ const Center: React.FC<{ top: number; children: React.ReactNode }> = ({ top, chi
 
 const Hook: React.FC = () => {
   const frame = useCurrentFrame();
-  const n = interpolate(frame, [10, 60], [0, RAISED], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-  const p = usePop(8, 8);
+  const from = localAt("hook", BEATS.recaud);
+  const n = interpolate(frame, [from, from + 66], [0, RAISED], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+  const p = usePop(from, 8);
   const pulse = 1 + Math.abs(Math.sin(frame * 0.25)) * 0.05;
   return (
     <Center top={250}>
@@ -162,7 +163,7 @@ const Problema: React.FC = () => (
         PLANTILLA ACTUAL
       </Banner>
     </Center>
-    <Stamp text="0 JUGADORES" at={16} top={430} />
+    <Stamp text="0 JUGADORES" at={localAt("problema", BEATS.jugadores)} top={430} />
   </>
 );
 

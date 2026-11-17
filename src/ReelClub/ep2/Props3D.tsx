@@ -11,7 +11,7 @@ export const CoinRain: React.FC = () => {
   return (
     <group>
       {Array.from({ length: 70 }, (_, i) => {
-        const delay = random(`cd${i}`) * 45;
+        const delay = random(`cd${i}`) * 90;
         const t = frame - delay;
         if (t < 0) return null;
         const x = (random(`cx${i}`) - 0.5) * 5;

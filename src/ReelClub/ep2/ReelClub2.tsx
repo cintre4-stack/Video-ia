@@ -51,12 +51,13 @@ export const ReelClub2: React.FC = () => {
       <Overlay2 />
 
       <Sequence name="Voz entrenador" from={LEAD} layout="none">
-        <Audio src={staticFile("voiceover/club-ep2/voz.mp3")} volume={1} />
+        <Audio src={staticFile("voiceover/club-ep2-eleven/voz.mp3")} volume={1} />
       </Sequence>
 
       <Sfx file="whistle.wav" from={0} volume={0.6} />
-      <Sfx file="ding.wav" from={10} volume={0.7} dur={60} />
-      <Sfx file="ding.wav" from={30} volume={0.7} dur={60} />
+      <Sfx file="ding.wav" from={at(BEATS.recaud)} volume={0.7} dur={60} />
+      <Sfx file="ding.wav" from={at(BEATS.recaud) + 22} volume={0.7} dur={60} />
+      <Sfx file="ding.wav" from={at(BEATS.recaud) + 44} volume={0.8} dur={60} />
       {SCENES2.slice(1).map((s) => (
         <Sfx key={s.id} file="whoosh.wav" from={s.start} volume={0.45} dur={30} />
       ))}
@@ -64,10 +65,10 @@ export const ReelClub2: React.FC = () => {
       <Sfx file="ding.wav" from={at(BEATS.goal) - 4} volume={0.75} dur={60} />
       <Sfx file="boom.wav" from={at(BEATS.papois)} volume={0.8} />
       <Sfx file="roar.wav" from={at(BEATS.papois)} volume={0.35} dur={60} />
-      <Sfx file="boom.wav" from={scene2("problema").start + 16} volume={0.6} />
-      <Sfx file="groan.wav" from={scene2("problema").start + 20} volume={0.4} dur={60} />
+      <Sfx file="boom.wav" from={at(BEATS.jugadores)} volume={0.6} />
+      <Sfx file="groan.wav" from={at(BEATS.jugadores) + 4} volume={0.4} dur={60} />
       <Sfx file="boom.wav" from={at(BEATS.titular)} volume={0.6} />
-      <Sfx file="boom.wav" from={scene2("rival").start + 22} volume={0.7} />
+      <Sfx file="boom.wav" from={scene2("rival").start + 28} volume={0.7} />
       <Sfx file="roar.wav" from={at(BEATS.ascend)} volume={0.4} dur={60} />
       <Sfx file="roar.wav" from={scene2("cta").start} volume={0.55} dur={scene2("cta").dur} />
       <Sfx file="crowd.wav" from={scene2("cta").start} volume={0.4} dur={scene2("cta").dur} />

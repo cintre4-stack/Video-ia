@@ -7,7 +7,7 @@ const poseFor = (id: SceneId2, frame: number): Pose => {
   switch (id) {
     case "hook":
       // Celebrating with both arms, then points at the viewer.
-      return f < at(1.0)
+      return f < at(BEATS.recaud)
         ? { ...REST, lz: -2.7 - 0.25 * s(f * 0.7), rz: 2.7 + 0.25 * s(f * 0.7), brow: 0.4 }
         : { ...REST, lz: -0.55, rz: 0.15, rx: -1.45, brow: 0.3 };
     case "nombre":
@@ -37,7 +37,7 @@ const poseFor = (id: SceneId2, frame: number): Pose => {
 const coach = (frame: number): CoachState => {
   const { scene, local } = scene2At(frame);
   const id = scene.id;
-  const celebrate = (id === "hook" && frame < at(1.0)) || id === "cta";
+  const celebrate = (id === "hook" && frame < at(BEATS.recaud)) || id === "cta";
   return still(poseFor(id, frame), {
     jump: celebrate ? Math.abs(Math.sin(local * 0.22)) * 0.4 : 0,
     headShake: id === "problema" && local > 20 ? Math.sin(local * 0.6) * 0.25 : 0,
