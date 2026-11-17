@@ -27,11 +27,11 @@ const SCENE_DEFS: { id: SceneId; voice: VoiceId; base: number; caption: string }
   { id: "hook", voice: "s01", base: 80, caption: "¡Oye, tú! Sí, TÚ. ¡Necesito tu AYUDA!" },
   { id: "cancha", voice: "s02", base: 120, caption: "Estoy fundando mi propio CLUB... pero mira esta cancha. Da PENA." },
   { id: "reglas", voice: "s03", base: 160, caption: "Cada LIKE es $1. ¡Y cada COMENTARIO, $10!" },
-  { id: "porterias", voice: "s04", base: 80, caption: "Porterías nuevas: $500" },
-  { id: "cesped", voice: "s05", base: 75, caption: "Césped de verdad: $2.000" },
-  { id: "focos", voice: "s06", base: 80, caption: "Focos para jugar de noche: $1.500" },
-  { id: "vestuario", voice: "s07", base: 80, caption: "Vestuario con duchas calientes: $3.000" },
-  { id: "grada", voice: "s08", base: 85, caption: "Y una grada para TI: ¡$5.000!" },
+  { id: "porterias", voice: "s04", base: 80, caption: "Porterías nuevas: $100" },
+  { id: "cesped", voice: "s05", base: 75, caption: "Césped de verdad: $400" },
+  { id: "focos", voice: "s06", base: 80, caption: "Focos para jugar de noche: $300" },
+  { id: "vestuario", voice: "s07", base: 80, caption: "Vestuario con duchas calientes: $600" },
+  { id: "grada", voice: "s08", base: 85, caption: "Y una grada para TI: ¡$1.000!" },
   { id: "nombre", voice: "s09", base: 125, caption: "El comentario con MÁS LIKES... ¡será el NOMBRE del equipo!" },
   { id: "cta", voice: "s10", base: 130, caption: "¡COMENTA YA! Nos vemos en la cancha." },
 ];
@@ -68,11 +68,11 @@ export const voiceLevel = (frame: number) => {
 
 /** Club facilities and their price tags, in the order they get upgraded. */
 export const ITEMS = [
-  { scene: "porterias", label: "PORTERÍAS NUEVAS", price: 500 },
-  { scene: "cesped", label: "CÉSPED DE VERDAD", price: 2000 },
-  { scene: "focos", label: "FOCOS NOCTURNOS", price: 1500 },
-  { scene: "vestuario", label: "VESTUARIO + DUCHAS", price: 3000 },
-  { scene: "grada", label: "GRADA PARA TI", price: 5000 },
+  { scene: "porterias", label: "PORTERÍAS NUEVAS", price: 100 },
+  { scene: "cesped", label: "CÉSPED DE VERDAD", price: 400 },
+  { scene: "focos", label: "FOCOS NOCTURNOS", price: 300 },
+  { scene: "vestuario", label: "VESTUARIO + DUCHAS", price: 600 },
+  { scene: "grada", label: "GRADA PARA TI", price: 1000 },
 ] as const satisfies readonly { scene: SceneId; label: string; price: number }[];
 
 export const GOAL_TOTAL = ITEMS.reduce((a, i) => a + i.price, 0);

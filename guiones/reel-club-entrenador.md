@@ -10,11 +10,11 @@ y cada instalación se reconstruye en pantalla al decir su precio.
 | 1 | Gancho | ¡Oye, tú! Sí, tú. ¡Necesito tu ayuda! | Zoom brusco a la cara, saluda y señala al espectador. Título "¡NECESITO TU AYUDA!". Silbato. |
 | 2 | La cancha | Estoy fundando mi propio club de fútbol... pero mira esta cancha. Da pena. | Plano de dron: tierra, charcos, portería oxidada. Se gira y señala. Sello rojo "DA PENA". |
 | 3 | Reglas | Así que vamos a arreglarla juntos. Cada like es un dólar. ¡Y cada comentario, diez dólares! | Brazos abiertos. Tarjetas "1 LIKE = $1" y "1 COMENTARIO = $10". |
-| 4 | Porterías | Porterías nuevas: quinientos dólares. | La portería vieja se hunde y sale una nueva con red. Etiqueta $500. Arranca la barra "META DEL CLUB". |
-| 5 | Césped | Césped de verdad: dos mil. | El césped se despliega a franjas y aparecen las líneas. $2.000. |
-| 6 | Focos | Focos para jugar de noche: mil quinientos. | Se hace de noche, suben las torres y se encienden con parpadeo. $1.500. |
-| 7 | Vestuario | Vestuario con duchas calientes: tres mil. | La caseta se convierte en vestuario con ventanas y vapor. $3.000. |
-| 8 | Grada | Y una grada para ti: ¡cinco mil dólares! | La grada sube fila a fila y hay un asiento dorado "para ti". $5.000. Meta: $12.000. |
+| 4 | Porterías | Porterías nuevas: cien dólares. | La portería vieja se hunde y sale una nueva con red. Etiqueta $100. Arranca la barra "META DEL CLUB". |
+| 5 | Césped | Césped de verdad: cuatrocientos. | El césped se despliega a franjas y aparecen las líneas. $400. |
+| 6 | Focos | Focos para jugar de noche: trescientos. | Se hace de noche, suben las torres y se encienden con parpadeo. $300. |
+| 7 | Vestuario | Vestuario con duchas calientes: seiscientos. | La caseta se convierte en vestuario con ventanas y vapor. $600. |
+| 8 | Grada | Y una grada para ti: ¡mil dólares! | La grada sube fila a fila y hay un asiento dorado "para ti". $1.000. Meta: $2.400. |
 | 9 | Nombre | Y lo mejor... el comentario con más likes... ¡será el nombre del equipo! | Primer plano. Tarjeta de comentario "Club ???" con los likes subiendo. Golpe: "= NOMBRE DEL EQUIPO". |
 | 10 | CTA | ¡Comenta ya! Nos vemos en la cancha. | Estadio iluminado, confeti, afición saltando. "¡COMENTA YA!", "$1 · $10" y flecha "AQUÍ" hacia los botones. |
 
