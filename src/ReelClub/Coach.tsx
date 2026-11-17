@@ -13,7 +13,7 @@ const poseFor = (id: SceneId, local: number, f: number): Pose => {
   switch (id) {
     case "hook":
       // Waves, then points straight at the viewer.
-      return local < 45
+      return local < 62
         ? { ...REST, lz: -0.55, rz: 2.5 + 0.35 * s(f * 0.55), brow: 0.25 }
         : { ...REST, lz: -0.55, rz: 0.15, rx: -1.45, brow: 0.3 };
     case "cancha":
@@ -78,7 +78,7 @@ export const Coach: React.FC<{ position?: [number, number, number] }> = ({ posit
   const jump = scene.id === "cta" ? Math.abs(Math.sin(local * 0.22)) * 0.45 : 0;
   const bob = talk * 0.04 + Math.sin(frame * 0.12) * 0.015 + jump;
   const headShake = scene.id === "cancha" && local > 140 ? Math.sin(local * 0.6) * 0.25 : 0;
-  const headTilt = Math.sin(frame * 0.07) * 0.06 + (scene.id === "hook" && local > 45 ? -0.12 : 0);
+  const headTilt = Math.sin(frame * 0.07) * 0.06 + (scene.id === "hook" && local > 62 ? -0.12 : 0);
   // Blink every ~2.5 s.
   const blink = frame % 75 < 3 ? 0.15 : 1;
   const mouthOpen = 0.08 + talk * 0.9;
