@@ -1,8 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { body, CLUB, display } from "./theme";
-import { GOAL_TOTAL, ITEMS, LEAD, money, Scene, sceneById, SCENES, UPGRADE_AT } from "./timeline";
-import { VOICE_FRAMES } from "./voiceover.generated";
+import { GOAL_TOTAL, ITEMS, LEAD, money, Scene, sceneById, SCENES, upgradeAt, voiceFrame } from "./timeline";
 
 const OUTLINE: React.CSSProperties = {
   WebkitTextStroke: "12px #0A0F1A",
@@ -47,7 +46,7 @@ const Bubble: React.FC<{ size: number; color?: string }> = ({ size, color = "#4C
 const Caption: React.FC<{ scene: Scene }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const words = scene.caption.split(" ");
-  const span = VOICE_FRAMES[scene.voice] * 0.85;
+  const span = scene.vlen * 0.85;
   const out = interpolate(frame, [scene.dur - 6, scene.dur], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <div
@@ -176,7 +175,7 @@ const CanchaGraphics: React.FC = () => {
           MI NUEVO CLUB
         </div>
       </div>
-      <Stamp text="DA PENA" at={LEAD + VOICE_FRAMES.s02 - 28} top={420} />
+      <Stamp text="DA PENA" at={voiceFrame("cancha", 8.51)} top={420} />
     </>
   );
 };
@@ -216,16 +215,16 @@ const RuleCard: React.FC<{ at: number; icon: React.ReactNode; left: string; righ
 
 const Rules: React.FC = () => (
   <div style={{ position: "absolute", top: 250, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
-    <RuleCard at={LEAD + 58} icon={<Heart size={110} />} left="1 LIKE" right="$1" tilt={-3} />
-    <RuleCard at={LEAD + 108} icon={<Bubble size={96} />} left="1 COMENTARIO" right="$10" tilt={3} size={70} />
+    <RuleCard at={voiceFrame("reglas", 12.08)} icon={<Heart size={110} />} left="1 LIKE" right="$1" tilt={-3} />
+    <RuleCard at={voiceFrame("reglas", 13.5)} icon={<Bubble size={96} />} left="1 COMENTARIO" right="$10" tilt={3} size={70} />
   </div>
 );
 
-const PriceTag: React.FC<{ label: string; price: number }> = ({ label, price }) => {
+const PriceTag: React.FC<{ label: string; price: number; at: number }> = ({ label, price, at }) => {
   const frame = useCurrentFrame();
-  const p = usePop(UPGRADE_AT, 8);
-  const swing = Math.sin((frame - UPGRADE_AT) * 0.25) * 6 * Math.exp(-(frame - UPGRADE_AT) / 25);
-  if (frame < UPGRADE_AT) return null;
+  const p = usePop(at, 8);
+  const swing = Math.sin((frame - at) * 0.25) * 6 * Math.exp(-(frame - at) / 25);
+  if (frame < at) return null;
   return (
     <div style={{ position: "absolute", top: 400, width: "100%", display: "flex", justifyContent: "center" }}>
       <div style={{ transform: `scale(${p}) rotate(${swing - 3}deg)`, transformOrigin: "50% 0%", textAlign: "center" }}>
@@ -251,15 +250,15 @@ const GoalHud: React.FC = () => {
   const frame = useCurrentFrame();
   const first = sceneById("porterias");
   const nombre = sceneById("nombre");
-  if (frame < first.start + UPGRADE_AT) return null;
+  if (frame < first.start + upgradeAt("porterias")) return null;
   // Out of the way while the name card is on screen.
   if (frame >= nombre.start && frame < nombre.start + nombre.dur) return null;
   let raised = 0;
   for (const item of ITEMS) {
-    const t = sceneById(item.scene).start + UPGRADE_AT;
+    const t = sceneById(item.scene).start + upgradeAt(item.scene);
     raised += item.price * interpolate(frame, [t, t + 18], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   }
-  const appear = spring({ frame: frame - first.start - UPGRADE_AT, fps: 30, config: { damping: 14 } });
+  const appear = spring({ frame: frame - first.start - upgradeAt("porterias"), fps: 30, config: { damping: 14 } });
   const pct = raised / GOAL_TOTAL;
   return (
     <div
@@ -296,7 +295,7 @@ const GoalHud: React.FC = () => {
 const NameReveal: React.FC = () => {
   const frame = useCurrentFrame();
   const card = usePop(LEAD + 6);
-  const revealAt = LEAD + Math.round(VOICE_FRAMES.s09 * 0.55);
+  const revealAt = voiceFrame("nombre", 31.72);
   const ribbon = usePop(revealAt, 8);
   const likes = Math.floor(interpolate(frame, [LEAD + 6, revealAt + 20], [12, 9999], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.in(Easing.quad) }));
   const cursor = Math.floor(frame / 8) % 2 === 0 ? "|" : " ";
@@ -420,7 +419,7 @@ export const Overlay: React.FC = () => (
       return (
         <Sequence key={s.id} name={`Gráficos ${s.index + 1} ${s.id}`} from={s.start} durationInFrames={s.dur}>
           {G && <G />}
-          {item && <PriceTag label={item.label} price={item.price} />}
+          {item && <PriceTag label={item.label} price={item.price} at={s.up} />}
           <Caption scene={s} />
         </Sequence>
       );

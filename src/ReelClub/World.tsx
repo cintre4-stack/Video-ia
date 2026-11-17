@@ -2,14 +2,14 @@ import React, { useMemo } from "react";
 import * as THREE from "three";
 import { interpolate, random, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { CLUB } from "./theme";
-import { sceneById, SceneId, UPGRADE_AT } from "./timeline";
+import { sceneById, SceneId, upgradeAt } from "./timeline";
 
 /* ---------- helpers ---------- */
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 /** Global frame at which an item is rebuilt. */
-const upgradeFrame = (id: SceneId) => sceneById(id).start + UPGRADE_AT;
+const upgradeFrame = (id: SceneId) => sceneById(id).start + upgradeAt(id);
 
 /** Bouncy 0→1(+overshoot) build progress of an item. */
 const useBuild = (id: SceneId, delay = 0) => {
@@ -28,7 +28,7 @@ const useGone = (id: SceneId) => {
 export const useNight = () => {
   const frame = useCurrentFrame();
   const t = sceneById("focos").start;
-  return interpolate(frame, [t, t + UPGRADE_AT - 2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  return interpolate(frame, [t, t + upgradeAt("focos") - 2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 };
 
 const Mat: React.FC<{ c: string; r?: number; m?: number; e?: string; ei?: number }> = ({ c, r = 0.7, m = 0, e, ei = 0 }) => (

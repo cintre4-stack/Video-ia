@@ -1,10 +1,8 @@
 import { VOICE_ENV } from "./envelope.generated";
-import { VOICE_FRAMES } from "./voiceover.generated";
 
 export const FPS = 30;
-/** Frames between the start of a scene and its voice line. */
+/** The narration track starts this many frames into the reel (scene 1 has a short run-up). */
 export const LEAD = 6;
-const TAIL = 10;
 /** Frames the camera takes to fly from one shot to the next. */
 export const FLY = 16;
 
@@ -20,35 +18,39 @@ export type SceneId =
   | "nombre"
   | "cta";
 
-type VoiceId = keyof typeof VOICE_FRAMES;
-
-/** Order, voice line, minimum length and on-screen caption for each scene. */
-const SCENE_DEFS: { id: SceneId; voice: VoiceId; base: number; caption: string }[] = [
-  { id: "hook", voice: "s01", base: 80, caption: "¡Oye, tú! Sí, TÚ. ¡Necesito tu AYUDA!" },
-  { id: "cancha", voice: "s02", base: 120, caption: "Estoy fundando mi propio CLUB... pero mira esta cancha. Da PENA." },
-  { id: "reglas", voice: "s03", base: 160, caption: "Cada LIKE es $1. ¡Y cada COMENTARIO, $10!" },
-  { id: "porterias", voice: "s04", base: 80, caption: "Porterías nuevas: $100" },
-  { id: "cesped", voice: "s05", base: 75, caption: "Césped de verdad: $400" },
-  { id: "focos", voice: "s06", base: 80, caption: "Focos para jugar de noche: $300" },
-  { id: "vestuario", voice: "s07", base: 80, caption: "Vestuario con duchas calientes: $600" },
-  { id: "grada", voice: "s08", base: 85, caption: "Y una grada para TI: ¡$1.000!" },
-  { id: "nombre", voice: "s09", base: 125, caption: "El comentario con MÁS LIKES... ¡será el NOMBRE del equipo!" },
-  { id: "cta", voice: "s10", base: 130, caption: "¡COMENTA YA! Nos vemos en la cancha." },
+/**
+ * One narration track (ElevenLabs, voz.mp3). `a`/`end` are the seconds in that track where the
+ * scene's line starts/ends; `up` is the local frame at which the facility is rebuilt, timed so
+ * the price lands on the spoken price. Scene n starts at frame a*30, the track plays from LEAD.
+ */
+const SCENE_DEFS: { id: SceneId; a: number; end: number; up: number; caption: string }[] = [
+  { id: "hook", a: 0.0, end: 3.12, up: 0, caption: "¡Oye, tú! Sí, TÚ. ¡Necesito tu AYUDA!" },
+  { id: "cancha", a: 3.71, end: 9.29, up: 0, caption: "Estoy fundando mi propio CLUB... pero mira esta cancha. Da PENA." },
+  { id: "reglas", a: 9.83, end: 15.55, up: 0, caption: "Cada LIKE es $1. ¡Y cada COMENTARIO, $10!" },
+  { id: "porterias", a: 15.83, end: 17.75, up: 30, caption: "Porterías nuevas: $100" },
+  { id: "cesped", a: 18.05, end: 19.8, up: 23, caption: "Césped de verdad: $400" },
+  { id: "focos", a: 20.13, end: 22.36, up: 37, caption: "Focos para jugar de noche: $300" },
+  { id: "vestuario", a: 22.58, end: 25.52, up: 56, caption: "Vestuario con duchas calientes: $600" },
+  { id: "grada", a: 25.78, end: 28.26, up: 38, caption: "Y una grada para TI: ¡$1.000!" },
+  { id: "nombre", a: 28.65, end: 33.13, up: 0, caption: "Y lo mejor... el comentario con MÁS LIKES... ¡será el NOMBRE del equipo!" },
+  { id: "cta", a: 33.5, end: 35.79, up: 0, caption: "¡COMENTA YA! Nos vemos en la cancha." },
 ];
+/** Hold after the last word before the reel ends. */
+const END_HOLD = 100;
 
-export type Scene = (typeof SCENE_DEFS)[number] & { start: number; dur: number; index: number };
+export type Scene = (typeof SCENE_DEFS)[number] & { start: number; dur: number; index: number; vlen: number };
 
-export const SCENES: Scene[] = (() => {
-  let t = 0;
-  return SCENE_DEFS.map((s, index) => {
-    const dur = Math.max(s.base, LEAD + VOICE_FRAMES[s.voice] + TAIL);
-    const scene = { ...s, start: t, dur, index };
-    t += dur;
-    return scene;
-  });
-})();
+export const SCENES: Scene[] = SCENE_DEFS.map((s, index) => {
+  const start = Math.round(s.a * FPS);
+  const next = SCENE_DEFS[index + 1];
+  const dur = next ? Math.round(next.a * FPS) - start : END_HOLD;
+  return { ...s, start, dur, index, vlen: Math.round((s.end - s.a) * FPS) };
+});
 
 export const REEL_CLUB_FRAMES = SCENES.reduce((a, s) => a + s.dur, 0);
+
+/** Local frame (inside its scene) of a moment `t` seconds into the narration track. */
+export const voiceFrame = (id: SceneId, t: number) => Math.round((t - sceneById(id).a) * FPS) + LEAD;
 
 export const sceneById = (id: SceneId) => SCENES.find((s) => s.id === id)!;
 
@@ -58,13 +60,7 @@ export const sceneAt = (frame: number) => {
 };
 
 /** 0..1 loudness of the coach's voice at a global frame (drives the mouth). */
-export const voiceLevel = (frame: number) => {
-  const { scene, local } = sceneAt(frame);
-  const env = VOICE_ENV[scene.voice];
-  const i = local - LEAD;
-  if (!env || i < 0 || i >= env.length) return 0;
-  return env[i];
-};
+export const voiceLevel = (frame: number) => VOICE_ENV.voz?.[frame - LEAD] ?? 0;
 
 /** Club facilities and their price tags, in the order they get upgraded. */
 export const ITEMS = [
@@ -78,7 +74,6 @@ export const ITEMS = [
 export const GOAL_TOTAL = ITEMS.reduce((a, i) => a + i.price, 0);
 
 /** Frame (inside its scene) at which an item is rebuilt and its price pops. */
-export const UPGRADE_AT = FLY + 4;
+export const upgradeAt = (id: SceneId) => sceneById(id).up;
 
 export const money = (n: number) => "$" + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-export { VOICE_FRAMES as VOICE_FRAMES_EXPORT } from "./voiceover.generated";

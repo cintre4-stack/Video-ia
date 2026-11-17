@@ -21,11 +21,11 @@ const poseFor = (id: SceneId, local: number, f: number): Pose => {
       return { ...REST, turn: local < 20 ? 0 : 0.9, rz: 0.5, rx: -1.35, lz: -0.45, brow: -0.35 };
     case "reglas":
       // Open arms, then one fist up for "¡diez dólares!".
-      return local < 85
+      return local < 116
         ? { ...REST, lz: -1.15 - 0.1 * s(f * 0.3), rz: 1.15 + 0.1 * s(f * 0.3), lx: -0.3, rx: -0.3, brow: 0.2 }
         : { ...REST, lz: -0.6, rz: 2.8 + 0.12 * s(f * 0.9), brow: 0.35 };
     case "nombre":
-      return local < 60
+      return local < 98
         ? { ...REST, lz: -0.25, lx: -1.1, rz: 0.25, rx: -1.1, brow: 0.1 }
         : { ...REST, lz: -2.6 - 0.15 * s(f * 0.6), rz: 2.6 + 0.15 * s(f * 0.6), brow: 0.4 };
     case "cta":
@@ -77,13 +77,13 @@ export const Coach: React.FC<{ position?: [number, number, number] }> = ({ posit
   // Little hops while talking, big jumps at the end.
   const jump = scene.id === "cta" ? Math.abs(Math.sin(local * 0.22)) * 0.45 : 0;
   const bob = talk * 0.04 + Math.sin(frame * 0.12) * 0.015 + jump;
-  const headShake = scene.id === "cancha" && local > 70 ? Math.sin(local * 0.6) * 0.25 : 0;
+  const headShake = scene.id === "cancha" && local > 140 ? Math.sin(local * 0.6) * 0.25 : 0;
   const headTilt = Math.sin(frame * 0.07) * 0.06 + (scene.id === "hook" && local > 45 ? -0.12 : 0);
   // Blink every ~2.5 s.
   const blink = frame % 75 < 3 ? 0.15 : 1;
   const mouthOpen = 0.08 + talk * 0.9;
   // Whisper beat in "nombre": lean toward the camera.
-  const lean = scene.id === "nombre" && local < 60 ? 0.12 : 0;
+  const lean = scene.id === "nombre" && local < 98 ? 0.12 : 0;
 
   return (
     <group position={[position[0], position[1] + bob, position[2]]} rotation={[lean, pose.turn, 0]}>
