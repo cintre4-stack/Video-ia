@@ -1,6 +1,8 @@
 import { Composition, Folder } from "remotion";
 import { ReelClub } from "./ReelClub/ReelClub";
 import { REEL_CLUB_FRAMES } from "./ReelClub/timeline";
+import { ReelClub2 } from "./ReelClub/ep2/ReelClub2";
+import { REEL_EP2_FRAMES } from "./ReelClub/ep2/timeline";
 import { ReelAnfield } from "./ReelAnfield/ReelAnfield";
 import { REEL_ANFIELD_FRAMES } from "./ReelAnfield/timeline";
 import { Reel9320 } from "./Reel9320/Reel9320";
@@ -29,6 +31,14 @@ export const RemotionRoot: React.FC = () => {
         id="Reel-Club-Entrenador"
         component={ReelClub}
         durationInFrames={REEL_CLUB_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Reel-Club-Ep2-Papois"
+        component={ReelClub2}
+        durationInFrames={REEL_EP2_FRAMES}
         fps={30}
         width={1080}
         height={1920}

@@ -3,12 +3,12 @@ import { AbsoluteFill, Easing, interpolate, Sequence, spring, useCurrentFrame, u
 import { body, CLUB, display } from "./theme";
 import { GOAL_TOTAL, ITEMS, LEAD, money, Scene, sceneById, SCENES, upgradeAt, voiceFrame } from "./timeline";
 
-const OUTLINE: React.CSSProperties = {
+export const OUTLINE: React.CSSProperties = {
   WebkitTextStroke: "12px #0A0F1A",
   paintOrder: "stroke fill",
 };
 
-const usePop = (delay: number, damping = 10) => {
+export const usePop = (delay: number, damping = 10) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   return spring({ frame: frame - delay, fps, config: { damping, stiffness: 170 } });
@@ -16,7 +16,7 @@ const usePop = (delay: number, damping = 10) => {
 
 /* ---------- icons ---------- */
 
-const Heart: React.FC<{ size: number; color?: string }> = ({ size, color = CLUB.red }) => (
+export const Heart: React.FC<{ size: number; color?: string }> = ({ size, color = CLUB.red }) => (
   <svg width={size} height={size} viewBox="0 0 24 24">
     <path
       d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.3 2.6.7-1.4 2.2-2.6 4.3-2.6 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"
@@ -27,7 +27,7 @@ const Heart: React.FC<{ size: number; color?: string }> = ({ size, color = CLUB.
   </svg>
 );
 
-const Bubble: React.FC<{ size: number; color?: string }> = ({ size, color = "#4CC9F0" }) => (
+export const Bubble: React.FC<{ size: number; color?: string }> = ({ size, color = "#4CC9F0" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24">
     <path
       d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"
@@ -43,7 +43,7 @@ const Bubble: React.FC<{ size: number; color?: string }> = ({ size, color = "#4C
 
 /* ---------- captions ---------- */
 
-const Caption: React.FC<{ scene: Scene }> = ({ scene }) => {
+export const Caption: React.FC<{ scene: Pick<Scene, "caption" | "vlen" | "dur"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const words = scene.caption.split(" ");
   const span = scene.vlen * 0.85;
@@ -128,7 +128,7 @@ const HookTitle: React.FC = () => {
   );
 };
 
-const Stamp: React.FC<{ text: string; at: number; color?: string; top?: number }> = ({ text, at, color = CLUB.red, top = 300 }) => {
+export const Stamp: React.FC<{ text: string; at: number; color?: string; top?: number }> = ({ text, at, color = CLUB.red, top = 300 }) => {
   const frame = useCurrentFrame();
   const t = interpolate(frame, [at, at + 6], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.back(2)) });
   if (frame < at) return null;

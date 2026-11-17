@@ -1,12 +1,13 @@
 import { useThree } from "@react-three/fiber";
 import { Easing, interpolate, useCurrentFrame } from "remotion";
-import { FLY, sceneAt, SCENES, SceneId } from "./timeline";
+import { FLY } from "./timeline";
 
 type V3 = [number, number, number];
 /** Each shot drifts from `from` to `to` while looking at `look`. */
-type Shot = { from: V3; to: V3; look: V3; fov: number };
+export type Shot = { from: V3; to: V3; look: V3; fov: number };
+export type CameraScene = { id: string; start: number; dur: number };
 
-const SHOTS: Record<SceneId, Shot> = {
+export const SHOTS_EP1: Record<string, Shot> = {
   hook: { from: [0, 2.3, 7.6], to: [0, 2.2, 6.3], look: [0, 2.05, 2], fov: 42 },
   cancha: { from: [3, 5, 9.5], to: [1.5, 6.5, 10.5], look: [0, 0.5, -10], fov: 50 },
   reglas: { from: [0, 2.2, 7.6], to: [0, 2.2, 7.0], look: [0, 2.45, 2], fov: 45 },
@@ -21,23 +22,25 @@ const SHOTS: Record<SceneId, Shot> = {
 
 const lerp = (a: V3, b: V3, t: number): V3 => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 
-const shotAt = (id: SceneId, t: number) => {
-  const s = SHOTS[id];
-  return { pos: lerp(s.from, s.to, t), look: s.look, fov: s.fov };
-};
-
 const ease = Easing.bezier(0.65, 0, 0.35, 1);
 
 /** Drives the default camera from the current frame: slow drift per shot, fast fly between shots. */
-export const CameraRig: React.FC = () => {
+export const CameraRig: React.FC<{ shots: Record<string, Shot>; scenes: CameraScene[] }> = ({ shots, scenes }) => {
   const frame = useCurrentFrame();
   const camera = useThree((s) => s.camera) as import("three").PerspectiveCamera;
-  const { scene, local } = sceneAt(frame);
-  const drift = Easing.out(Easing.quad)(local / scene.dur);
+  const index = Math.max(0, scenes.findIndex((s) => frame >= s.start && frame < s.start + s.dur));
+  const scene = frame >= scenes[scenes.length - 1].start ? scenes[scenes.length - 1] : scenes[index];
+  const sceneIndex = scenes.indexOf(scene);
+  const local = frame - scene.start;
+  const shotAt = (id: string, t: number) => {
+    const s = shots[id];
+    return { pos: lerp(s.from, s.to, t), look: s.look, fov: s.fov };
+  };
+  const drift = Easing.out(Easing.quad)(Math.min(1, local / scene.dur));
   let { pos, look, fov } = shotAt(scene.id, drift);
 
-  if (scene.index > 0 && local < FLY) {
-    const prev = SCENES[scene.index - 1];
+  if (sceneIndex > 0 && local < FLY) {
+    const prev = scenes[sceneIndex - 1];
     const a = shotAt(prev.id, 1);
     const t = ease(interpolate(local, [0, FLY], [0, 1]));
     // Arc slightly upward mid-flight for a drone feel.
@@ -47,8 +50,8 @@ export const CameraRig: React.FC = () => {
     look = lerp(a.look, look, t);
     fov = a.fov + (fov - a.fov) * t;
   }
-  // Hook: punch-in during the first frames.
-  if (scene.id === "hook") {
+  // Opening shot: punch-in during the first frames.
+  if (sceneIndex === 0) {
     const punch = interpolate(local, [0, 10], [2.5, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
     pos = [pos[0], pos[1], pos[2] + punch];
   }

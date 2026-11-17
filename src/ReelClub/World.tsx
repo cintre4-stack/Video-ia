@@ -2,33 +2,35 @@ import React, { useMemo } from "react";
 import * as THREE from "three";
 import { interpolate, random, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { CLUB } from "./theme";
-import { sceneById, SceneId, upgradeAt } from "./timeline";
+import { Facility, useEpisode } from "./episode";
 
 /* ---------- helpers ---------- */
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
-/** Global frame at which an item is rebuilt. */
-const upgradeFrame = (id: SceneId) => sceneById(id).start + upgradeAt(id);
+/** Global frame at which a facility is rebuilt. */
+const useBuildFrame = (id: Facility) => useEpisode().build[id];
 
-/** Bouncy 0→1(+overshoot) build progress of an item. */
-const useBuild = (id: SceneId, delay = 0) => {
+/** Bouncy 0→1(+overshoot) build progress of a facility. */
+const useBuild = (id: Facility, delay = 0) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  return spring({ frame: frame - upgradeFrame(id) - delay, fps, config: { damping: 11, stiffness: 140 } });
+  const at = useBuildFrame(id);
+  return spring({ frame: frame - at - delay, fps, config: { damping: 11, stiffness: 140 } });
 };
 
 /** 1→0 as the broken version is cleared away. */
-const useGone = (id: SceneId) => {
+const useGone = (id: Facility) => {
   const frame = useCurrentFrame();
-  return interpolate(frame - upgradeFrame(id), [-2, 6], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const at = useBuildFrame(id);
+  return interpolate(frame - at, [-2, 6], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 };
 
-/** 0 at dusk → 1 at night, as the floodlights are installed. */
+/** 0 at dusk → 1 at night, falling just before the floodlights switch on. */
 export const useNight = () => {
   const frame = useCurrentFrame();
-  const t = sceneById("focos").start;
-  return interpolate(frame, [t, t + upgradeAt("focos") - 2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const t = useBuildFrame("focos");
+  return interpolate(frame, [t - 35, t - 2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 };
 
 const Mat: React.FC<{ c: string; r?: number; m?: number; e?: string; ei?: number }> = ({ c, r = 0.7, m = 0, e, ei = 0 }) => (
@@ -140,9 +142,9 @@ const Scenery: React.FC = () => {
 /* ---------- particles ---------- */
 
 /** Sparkles + dust puff when a facility is rebuilt. */
-const Burst: React.FC<{ at: SceneId; pos: [number, number, number]; size?: number }> = ({ at, pos, size = 1 }) => {
+const Burst: React.FC<{ at: Facility; pos: [number, number, number]; size?: number }> = ({ at, pos, size = 1 }) => {
   const frame = useCurrentFrame();
-  const t = frame - upgradeFrame(at);
+  const t = frame - useBuildFrame(at);
   if (t < 0 || t > 40) return null;
   return (
     <group position={pos} scale={size}>
@@ -177,7 +179,7 @@ const Burst: React.FC<{ at: SceneId; pos: [number, number, number]; size?: numbe
 
 const Confetti: React.FC = () => {
   const frame = useCurrentFrame();
-  const t = frame - sceneById("cta").start;
+  const t = frame - useEpisode().partyAt;
   if (t < 0) return null;
   const colors = [CLUB.red, CLUB.gold, CLUB.white, "#4CC9F0", CLUB.navy];
   return (
@@ -207,7 +209,7 @@ const Pitch: React.FC = () => {
   const p = useBuild("cesped");
   const frame = useCurrentFrame();
   const stripes = 13;
-  const linesOpacity = clamp01((frame - upgradeFrame("cesped") - 12) / 10);
+  const linesOpacity = clamp01((frame - useBuildFrame("cesped") - 12) / 10);
   const tufts = useMemo(
     () =>
       Array.from({ length: 70 }, (_, i) => ({
@@ -402,7 +404,7 @@ const Floodlights: React.FC = () => {
   const frame = useCurrentFrame();
   const gone = useGone("focos");
   const glow = useMemo(glowTexture, []);
-  const t0 = upgradeFrame("focos");
+  const t0 = useBuildFrame("focos");
   return (
     <>
       {TOWERS.map(([x, z], i) => {
@@ -488,7 +490,7 @@ const LockerRoom: React.FC = () => {
   const p = useBuild("vestuario");
   const gone = useGone("vestuario");
   const sign = useMemo(signTexture, []);
-  const steamT = frame - upgradeFrame("vestuario");
+  const steamT = frame - useBuildFrame("vestuario");
   return (
     <group position={[-13, 0, -9]} rotation={[0, Math.PI / 2, 0]}>
       {/* old shack */}
@@ -589,10 +591,10 @@ const Fan: React.FC<{ seed: number; color: string; t: number }> = ({ seed, color
 const Stand: React.FC = () => {
   const frame = useCurrentFrame();
   const gone = useGone("grada");
-  const t0 = upgradeFrame("grada");
+  const t0 = useBuildFrame("grada");
   const rows = 5;
   const len = 10;
-  const ctaT = frame - sceneById("cta").start;
+  const ctaT = frame - useEpisode().partyAt;
   return (
     <group position={[12.6, 0, -9]} rotation={[0, -Math.PI / 2, 0]}>
       {/* one lonely broken bench */}

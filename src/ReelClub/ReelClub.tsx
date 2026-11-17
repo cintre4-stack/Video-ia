@@ -2,7 +2,9 @@ import { Audio } from "@remotion/media";
 import { ThreeCanvas } from "@remotion/three";
 import React from "react";
 import { AbsoluteFill, Sequence, staticFile, useVideoConfig } from "remotion";
-import { CameraRig } from "./CameraRig";
+import { CameraRig, SHOTS_EP1 } from "./CameraRig";
+import { EPISODE_1 } from "./ep1";
+import { EpisodeProvider } from "./episode";
 import { Coach } from "./Coach";
 import { Overlay } from "./Overlay";
 import { ITEMS, LEAD, SCENES, sceneById, upgradeAt, voiceFrame } from "./timeline";
@@ -26,9 +28,11 @@ export const ReelClub: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#1B1F3A" }}>
       <ThreeCanvas width={width} height={height} camera={{ fov: 45, near: 0.1, far: 300, position: [0, 2, 6] }}>
-        <CameraRig />
-        <World />
-        <Coach />
+        <EpisodeProvider value={EPISODE_1}>
+          <CameraRig shots={SHOTS_EP1} scenes={SCENES} />
+          <World />
+          <Coach />
+        </EpisodeProvider>
       </ThreeCanvas>
       <Overlay />
 

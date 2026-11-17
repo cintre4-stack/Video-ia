@@ -1,50 +1,19 @@
 import React from "react";
 import { useCurrentFrame } from "remotion";
 import { CLUB } from "./theme";
-import { sceneAt, SceneId, voiceLevel } from "./timeline";
+import { CoachState, Pose, useEpisode } from "./episode";
 
-/** Arm angles (radians). z swings the arm sideways, x swings it forward (negative = toward camera). */
-type Pose = { lz: number; lx: number; rz: number; rx: number; turn: number; brow: number };
-
-const REST: Pose = { lz: -0.25, lx: 0, rz: 0.25, rx: 0, turn: 0, brow: 0 };
-
-const poseFor = (id: SceneId, local: number, f: number): Pose => {
-  const s = Math.sin;
-  switch (id) {
-    case "hook":
-      // Waves, then points straight at the viewer.
-      return local < 62
-        ? { ...REST, lz: -0.55, rz: 2.5 + 0.35 * s(f * 0.55), brow: 0.25 }
-        : { ...REST, lz: -0.55, rz: 0.15, rx: -1.45, brow: 0.3 };
-    case "cancha":
-      // Turns toward the pitch and points at it, then shakes head.
-      return { ...REST, turn: local < 20 ? 0 : 0.9, rz: 0.5, rx: -1.35, lz: -0.45, brow: -0.35 };
-    case "reglas":
-      // Open arms, then one fist up for "¡diez dólares!".
-      return local < 116
-        ? { ...REST, lz: -1.15 - 0.1 * s(f * 0.3), rz: 1.15 + 0.1 * s(f * 0.3), lx: -0.3, rx: -0.3, brow: 0.2 }
-        : { ...REST, lz: -0.6, rz: 2.8 + 0.12 * s(f * 0.9), brow: 0.35 };
-    case "nombre":
-      return local < 98
-        ? { ...REST, lz: -0.25, lx: -1.1, rz: 0.25, rx: -1.1, brow: 0.1 }
-        : { ...REST, lz: -2.6 - 0.15 * s(f * 0.6), rz: 2.6 + 0.15 * s(f * 0.6), brow: 0.4 };
-    case "cta":
-      return { ...REST, lz: -2.7 - 0.25 * s(f * 0.7), rz: 2.7 + 0.25 * s(f * 0.7), brow: 0.4 };
-    default:
-      // Off-camera during the price tour: a proud thumbs up.
-      return { ...REST, rz: 0.4, rx: -1.0, brow: 0.2 };
-  }
-};
-
-/** Box-filters the pose over the last frames so every pose change eases in. */
+/** Box-filters the arm pose over the last frames so every pose change eases in. */
 const SMOOTH = 8;
-const usePose = (frame: number): Pose => {
-  const acc: Pose = { lz: 0, lx: 0, rz: 0, rx: 0, turn: 0, brow: 0 };
+const POSE_KEYS: (keyof Pose)[] = ["lz", "lx", "rz", "rx", "turn", "brow"];
+const useCoachState = (frame: number): CoachState => {
+  const { coach } = useEpisode();
+  const now = coach(frame);
+  const acc = { ...now };
+  POSE_KEYS.forEach((k) => (acc[k] = 0));
   for (let k = 0; k < SMOOTH; k++) {
-    const f = Math.max(0, frame - k);
-    const { scene, local } = sceneAt(f);
-    const p = poseFor(scene.id, local, f);
-    (Object.keys(acc) as (keyof Pose)[]).forEach((key) => (acc[key] += p[key] / SMOOTH));
+    const p = coach(Math.max(0, frame - k));
+    POSE_KEYS.forEach((key) => (acc[key] += p[key] / SMOOTH));
   }
   return acc;
 };
@@ -70,20 +39,14 @@ const Arm: React.FC<{ side: 1 | -1; z: number; x: number }> = ({ side, z, x }) =
  */
 export const Coach: React.FC<{ position?: [number, number, number] }> = ({ position = [0, 0, 2] }) => {
   const frame = useCurrentFrame();
-  const { scene, local } = sceneAt(frame);
-  const pose = usePose(frame);
-  const talk = voiceLevel(frame);
-
-  // Little hops while talking, big jumps at the end.
-  const jump = scene.id === "cta" ? Math.abs(Math.sin(local * 0.22)) * 0.45 : 0;
+  const pose = useCoachState(frame);
+  const talk = useEpisode().voice(frame);
+  const { jump, headShake, lean } = pose;
   const bob = talk * 0.04 + Math.sin(frame * 0.12) * 0.015 + jump;
-  const headShake = scene.id === "cancha" && local > 140 ? Math.sin(local * 0.6) * 0.25 : 0;
-  const headTilt = Math.sin(frame * 0.07) * 0.06 + (scene.id === "hook" && local > 62 ? -0.12 : 0);
+  const headTilt = Math.sin(frame * 0.07) * 0.06 + pose.headTilt;
   // Blink every ~2.5 s.
   const blink = frame % 75 < 3 ? 0.15 : 1;
   const mouthOpen = 0.08 + talk * 0.9;
-  // Whisper beat in "nombre": lean toward the camera.
-  const lean = scene.id === "nombre" && local < 98 ? 0.12 : 0;
 
   return (
     <group position={[position[0], position[1] + bob, position[2]]} rotation={[lean, pose.turn, 0]}>
