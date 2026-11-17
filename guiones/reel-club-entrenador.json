@@ -1,0 +1,17 @@
+{
+  "title": "Reel 3D · El entrenador que funda su club (gancho: 1 like = 1 dólar)",
+  "note": "Voz del entrenador, en primera persona y mirando a cámara. 'like' se escribe 'laik' para Piper.",
+  "lines": [
+    ["s01", "¡Oye, tú! Sí, tú. ¡Necesito tu ayuda!"],
+    ["s02", "Estoy fundando mi propio club de fútbol... pero mira esta cancha. Da pena."],
+    ["s03", "Así que vamos a arreglarla juntos. Cada laik es un dólar. ¡Y cada comentario, diez dólares!"],
+    ["s04", "Porterías nuevas: quinientos dólares."],
+    ["s05", "Césped de verdad: dos mil."],
+    ["s06", "Focos para jugar de noche: mil quinientos."],
+    ["s07", "Vestuario con duchas calientes: tres mil."],
+    ["s08", "Y una grada para ti: ¡cinco mil dólares!"],
+    ["s09", "Y lo mejor... el comentario con más laiks... ¡será el nombre del equipo!"],
+    ["s10", "¡Comenta ya! Nos vemos en la cancha."]
+  ],
+  "speed": { "s09": 1.0 }
+}
