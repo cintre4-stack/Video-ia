@@ -1,0 +1,15 @@
+{
+  "lines": [
+    ["s01", "¡Lo logramos! ¡Juntamos novecientos dólares para el club!"],
+    ["s02", "Ya tenemos porterías nuevas,"],
+    ["s03", "cancha de verdad,"],
+    ["s04", "¡y luces para jugar de noche!"],
+    ["s05", "Pero ojo. Todavía nos faltan mil quinientos dólares."],
+    ["s06", "Así que no paren. Cada like es un dólar. ¡Y cada comentario, diez!"],
+    ["s07", "Y el nombre del equipo ya está decidido. ¡Efe Ce Estuat! Idea de equis de doce, guion bajo uno."],
+    ["s08", "Y lo más importante. Los primeros once comentarios serán el once titular,"],
+    ["s09", "para jugar contra un equipo de tercera división. ¡Si ganamos, subimos!"],
+    ["s10", "¡Comenta ya! Nos vemos en la cancha."]
+  ],
+  "speed": {"s01": 0.85, "s04": 0.85, "s10": 0.85}
+}
