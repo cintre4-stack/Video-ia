@@ -1,13 +1,14 @@
 # Mi nuevo club — Parte 2
 
-Reuses Part 1's footage, removes its burned-in text and adds new graphics:
+Drawn from scratch with PIL (no Part 1 footage): the coach, the club scenes,
 goal meter $900 / $2.400, "TODAVÍA FALTAN $1.500", the winning comment card
 (FC Stuat, by @xd12_1), the 11 starter slots and the third-division match.
+The coach's mouth follows the voice loudness.
 
 1. Voice: `guion.json` (Piper offline for now; for ElevenLabs paste the text below).
-2. `ffmpeg -i part1.mp4 -q:v 2 frames/%04d.jpg`
-3. `python3 render.py frames/ vo/ video.mp4 --fonts fonts/` (`--preview` writes a contact sheet)
-4. `python3 mix.py vo/ ../../public/sfx video.mp4 reel-club-parte2.mp4`
+2. `python3 render.py vo/ video.mp4 --fonts fonts/` (`--preview` writes a contact sheet;
+   fonts/ holds LilitaOne.ttf converted from public/fonts/LilitaOne.woff2)
+3. `python3 mix.py vo/ ../../public/sfx video.mp4 reel-club-parte2.mp4`
 
 `vo/` holds `voice.wav` and `timeline.json` (start/end of each line in seconds).
 
