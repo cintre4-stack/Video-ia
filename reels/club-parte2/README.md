@@ -6,9 +6,13 @@ goal meter $900 / $2.400, "TODAVÍA FALTAN $1.500", the winning comment card
 The coach's mouth follows the voice loudness.
 
 1. Voice: `guion.json` (Piper offline for now; for ElevenLabs paste the text below).
-2. `python3 render.py vo/ video.mp4 --fonts fonts/` (`--preview` writes a contact sheet;
+2. 3D layer (three.js 0.170 in headless Chromium, the low-poly pitch + the coach):
+   `python3 render.py vo/ x --fonts fonts/ --export3d scene3d` (writes scenes.json + env.json)
+   `node scene3d/render3d.js scene3d <path to three/build/three.module.js> f3d/ <frames> --workers 3`
+3. Graphics on top: `python3 render.py vo/ video.mp4 --fonts fonts/ --bg3d f3d/`
+   (`--preview` writes a contact sheet; without `--bg3d` it draws a flat 2D version;
    fonts/ holds LilitaOne.ttf converted from public/fonts/LilitaOne.woff2)
-3. `python3 mix.py vo/ ../../public/sfx video.mp4 reel-club-parte2.mp4`
+4. `python3 mix.py vo/ ../../public/sfx video.mp4 reel-club-parte2.mp4`
 
 `vo/` holds `voice.wav` and `timeline.json` (start/end of each line in seconds).
 

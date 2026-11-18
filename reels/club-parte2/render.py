@@ -19,6 +19,8 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 VODIR, OUT = Path(sys.argv[1]), sys.argv[2]
 PREVIEW = "--preview" in sys.argv
 FONTDIR = Path(sys.argv[sys.argv.index("--fonts") + 1]) if "--fonts" in sys.argv else Path("fonts")
+# --bg3d <dir>: JPEG frames from scene3d/render3d.js (the 3D world + coach); 2D only draws the graphics on top
+BG3D = Path(sys.argv[sys.argv.index("--bg3d") + 1]) if "--bg3d" in sys.argv else None
 W, H, FPS, K = 1080, 1920, 30, 2  # K = supersampling
 TL = json.loads((VODIR / "timeline.json").read_text())
 LINES, TOTAL = TL["tl"], TL["total"]
@@ -284,6 +286,8 @@ def ball(d, x, y, r, lt):
 # ---------------------------------------------------------------- the coach
 def coach(canvas, cx, cy, s, pose="idle", mouth=0.0, mood="happy", t=0.0):
     """cx, cy = centre of the head; s = scale (head radius = 150*s)."""
+    if BG3D:
+        return
     d = D(canvas)
     R = 150 * s
     cy += math.sin(t * 7) * 4 * s
@@ -621,16 +625,22 @@ def glow_layer(c, shapes, alpha, blur):
 
 def sc_item(c, lt, t, name):
     d = D(c)
-    if name == "goal":
+    if BG3D:
+        name_world = None
+    else:
+        name_world = name
+    if name_world == "goal":
         goal_front(d, 540, 1300 + 30 * (1 - ease_out(lt / 0.4)), 900, 440)
         d.ellipse((470, 1420, 610, 1470), fill=(0, 0, 0, 60))
         ball(d, 540, 1390 - abs(math.sin(lt * 6)) * 90, 55, lt)
-    if name == "grass":
+    if name_world == "grass":
         x = W * ease_out(lt / 0.8)  # the dirt rolls away and leaves real grass
         d.rect((x, 940, W, H), fill=(196, 128, 74))
         d.ellipse((290, 1180, 790, 1480), outline=(240, 250, 240), width=8)
         d.rect((x, 1170, W, 1490), fill=(196, 128, 74))
-    if name == "lights":
+    if name == "lights" and BG3D and lt > 0.25:
+        confetti(c, lt - 0.25)
+    if name_world == "lights":
         on = clamp((lt - 0.25) / 0.15)
         if on > 0:
             glow_layer(c, [("poly", [(500, 760), (580, 760), (1000, 1900), (80, 1900)])], 90 * on, 10)
@@ -656,7 +666,8 @@ def sc_short(c, lt, t):
         s = 1 + 0.9 * (1 - ease_out(x)) if x < 1 else 1
         paste(c, spr, 540, 520, s, rot=-7, alpha=min(1, x * 1.5))
         yy = 760 + ((lt * 200) % 120)
-        D(c).ellipse((850, yy, 880, yy + 44), fill=(120, 200, 255))
+        if not BG3D:
+            D(c).ellipse((850, yy, 880, yy + 44), fill=(120, 200, 255))
 
 
 def sc_rates(c, lt, t):
@@ -698,7 +709,7 @@ def sc_eleven(c, lt, t):
 
 
 def sc_vs(c, lt, t):
-    D(c).rect((0, 0, W, H), fill=(6, 8, 20, 120))
+    D(c).rect((0, 0, W, H), fill=(6, 8, 20, 90 if BG3D else 120))
     paste(c, big_text("PARTIDO POR EL ASCENSO", 66, YEL, 8), 540, 260, ease_back(lt / 0.3))
     paste(c, crest("FC", "STUAT", RED), 270 - 300 * (1 - ease_out(lt / 0.35)), 640, 0.95)
     paste(c, crest("3ª", "DIVISIÓN", (80, 86, 104)), 810 + 300 * (1 - ease_out(lt / 0.35)), 640, 0.95)
@@ -715,7 +726,8 @@ def sc_vs(c, lt, t):
 
 def sc_end(c, lt, t):
     coach(c, 540, 1060, 1.6, "wave", mouth_at(t), "happy", t)
-    ball(D(c), 850, 1640, 60, 0)
+    if not BG3D:
+        ball(D(c), 850, 1640, 60, 0)
     meter(c, RAISED)
     paste(c, big_text("¡COMENTA YA!", 130), 540, 450, ease_back(lt / 0.35), rot=-3)
     spr, dd = card_sprite(470, 100, WHITE, radius=50)
@@ -744,7 +756,12 @@ def frame(t):
         if s0 <= t < s1:
             break
     lt, dur = t - s0, s1 - s0
-    c = bg(SCENE_BG[name])
+    if BG3D:
+        c = Image.open(BG3D / f"{int(round(t * FPS)):04d}.jpg").convert("RGB").resize((W * K, H * K), Image.BILINEAR)
+        if name == "vs":
+            c = c.filter(ImageFilter.GaussianBlur(5 * K))
+    else:
+        c = bg(SCENE_BG[name])
     if name in ITEMS:
         sc_item(c, lt, t, name)
     else:
@@ -756,7 +773,7 @@ def frame(t):
         if lt < 1.15:
             k = (1.15 - lt) / 0.3
             img = img.transform((W, H), Image.AFFINE, (1, 0, 14 * k * math.sin(lt * 90), 0, 1, 10 * k * math.cos(lt * 70)))
-    z = 1 + 0.04 * lt / max(dur, 0.1)  # slow push-in
+    z = 1 + (0 if BG3D else 0.04) * lt / max(dur, 0.1)  # slow push-in (3D camera moves by itself)
     img = img.transform((W, H), Image.AFFINE, (1 / z, 0, W / 2 * (1 - 1 / z), 0, 1 / z, H / 2 * (1 - 1 / z)),
                         Image.BILINEAR)
     if lt < 0.1 and s0 > 0:
@@ -770,9 +787,22 @@ def render_bytes(i):
     return frame(i / FPS).tobytes()
 
 
+def export3d(d):
+    d = Path(d)
+    (d / "scenes.json").write_text(json.dumps({
+        "scenes": [{"name": n, "s0": a, "s1": b} for a, b, n in SCENES],
+        "start": START, "marks": {"name_said": frac("s07", 0.5)}, "total": TOTAL}))
+    (d / "env.json").write_text(json.dumps([round(float(v), 3) for v in ENV]))
+    print("frames", int(TOTAL * FPS))
+
+
 def main():
+    if "--export3d" in sys.argv:
+        return export3d(sys.argv[sys.argv.index("--export3d") + 1])
     if PREVIEW:
         ts = [0.3, 1.5, 2.8, 4.2, 5.6, 6.9, 8.4, 9.9, 12.0, 14.5, 16.5, 19.5, 22.0, 24.3, 26.0, 28.0, 29.5, 31.5]
+        if BG3D:  # only the frames that were rendered in 3D
+            ts = [int(f.stem) / FPS for f in sorted(BG3D.glob("*.jpg"))][:18]
         sheet = Image.new("RGB", (360 * 6, 640 * 3))
         for i, t in enumerate(ts):
             th = frame(t).resize((360, 640))
