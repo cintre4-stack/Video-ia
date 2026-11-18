@@ -7,7 +7,7 @@ import { Confetti, Flash } from "../Reel9320/Stage";
 import { body, C, display } from "../Reel9320/theme";
 import { BOSS, FANS, GAMER, V, WORKERS } from "./Cast";
 import { BigText, Bubble, CalendarPage, OfficeBoard, RedVignette, StatusChip, Stamp, Vhs } from "./Hud";
-import { CALL_VOICE_FROM } from "./timeline";
+import { CALL_VOICE_FROM, cue } from "./timeline";
 import { Chair, Couch, CouchBack, Desk, NeonSky, Office, Room, Street } from "./Sets";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -15,11 +15,13 @@ const G = 1430;
 /** Couch seat line; gamer feet sit a bit lower so the couch front hides the legs. */
 const SEAT_Y = 1500;
 
+const fmt = (n: number) => n.toLocaleString("es-ES").replace(/\s/g, ".");
+
 const shakeX = (frame: number, at: number, power = 18) =>
   frame >= at ? Math.sin(frame * 3) * interpolate(frame - at, [0, 14], [power, 0], clamp) : 0;
 
 /* ───────────── 1. GANCHO: LA FIEBRE ───────────── */
-const CURE = 110;
+const CURE = cue("s01", "cura");
 export const SceneHook: React.FC = () => {
   const frame = useCurrentFrame();
   const zoom = interpolate(frame, [0, CURE], [1, 1.08], clamp);
@@ -48,8 +50,8 @@ export const SceneHook: React.FC = () => {
 };
 
 /* ───────────── 2. REBOBINAR A 2013 ───────────── */
-const REW_END = 36;
-const RELEASE = 104;
+const REW_END = cue("s02", "fecha") - 2;
+const RELEASE = cue("s02", "sale");
 export const SceneRewind: React.FC = () => {
   const frame = useCurrentFrame();
   const rewinding = frame < REW_END;
@@ -87,7 +89,7 @@ export const SceneRewind: React.FC = () => {
 };
 
 /* ───────────── 3. ENCUESTA: 46% PIDIÓ EL DÍA ───────────── */
-const POLL_FILL = [70, 120] as const;
+const POLL_FILL = [cue("s03", "casi"), cue("s03", "casi") + 36] as const;
 export const ScenePoll: React.FC = () => {
   const frame = useCurrentFrame();
   const pct = Math.round(interpolate(frame, POLL_FILL, [0, 46], { ...clamp, easing: Easing.out(Easing.cubic) }));
@@ -96,8 +98,8 @@ export const ScenePoll: React.FC = () => {
     <AbsoluteFill>
       <Office />
       <MinuteBadge text="ENCUESTA EN IGN · 2013" color="#2E6BD8" top={250} />
-      <div style={{ position: "absolute", left: 0, right: 0, top: 350, textAlign: "center", fontFamily: body, fontWeight: 900, fontSize: 46, color: C.ink }}>
-        ~11.000 lectores votaron
+      <div style={{ position: "absolute", left: 0, right: 0, top: 350, textAlign: "center", fontFamily: body, fontWeight: 900, fontSize: 46, color: C.ink, fontVariantNumeric: "tabular-nums" }}>
+        {fmt(Math.round(interpolate(frame, [10, 70], [0, 10995], { ...clamp, easing: Easing.out(Easing.quad) })))} lectores votaron
       </div>
       <BigText top={420} size={230} at={POLL_FILL[0]} color={V.yellow}>
         {pct}%
@@ -132,7 +134,7 @@ export const ScenePoll: React.FC = () => {
 };
 
 /* ───────────── 4. UNO DE CADA CINCO FINGIÓ ───────────── */
-const FAKE = 86;
+const FAKE = cue("s04", "fingiendo");
 export const SceneOneInFive: React.FC = () => {
   const frame = useCurrentFrame();
   const spot = interpolate(frame, [30, 44], [0, 1], clamp);
@@ -178,7 +180,7 @@ export const SceneOneInFive: React.FC = () => {
 };
 
 /* ───────────── 5. LA LLAMADA ───────────── */
-const WINK = 96;
+const WINK = CALL_VOICE_FROM + 98;
 export const SceneCall: React.FC = () => {
   const frame = useCurrentFrame();
   const ring = frame < 26 ? Math.sin(frame * 2.2) * 6 : 0;
@@ -231,7 +233,7 @@ export const SceneCall: React.FC = () => {
 
 
 /* ───────────── 6. COLAS A MEDIANOCHE ───────────── */
-const MIDNIGHT = 62;
+const MIDNIGHT = cue("s06", "colas") + 14;
 export const SceneQueue: React.FC = () => {
   const frame = useCurrentFrame();
   const open = frame >= MIDNIGHT;
@@ -264,15 +266,14 @@ export const SceneQueue: React.FC = () => {
 };
 
 /* ───────────── 7. 800 MILLONES EN UN DÍA ───────────── */
-const DAY1_END = 80;
-const DAY3 = 104;
-const RECORD = 152;
-const fmt = (n: number) => n.toLocaleString("es-ES").replace(/\s/g, ".");
+const DAY1_END = cue("s07", "ocho") + 48;
+const DAY3 = cue("s07", "mil");
+const RECORD = DAY3 + 40;
 export const SceneMoney: React.FC = () => {
   const frame = useCurrentFrame();
   const value =
     frame < DAY3
-      ? Math.round(interpolate(frame, [16, DAY1_END], [0, 800], { ...clamp, easing: Easing.out(Easing.quad) })) * 1_000_000
+      ? Math.round(interpolate(frame, [DAY1_END - 54, DAY1_END], [0, 800], { ...clamp, easing: Easing.out(Easing.quad) })) * 1_000_000
       : 1_000_000_000;
   const bump = frame >= DAY3 ? interpolate(frame - DAY3, [0, 5, 12], [1.25, 0.95, 1], clamp) : 1;
   return (
@@ -299,6 +300,7 @@ export const SceneMoney: React.FC = () => {
 };
 
 /* ───────────── 8. OFICINAS VACÍAS ───────────── */
+const SILLAS = cue("s08", "sillas");
 export const SceneOffice: React.FC = () => {
   const frame = useCurrentFrame();
   const bx = interpolate(frame, [0, 120], [120, 900], clamp);
@@ -324,23 +326,26 @@ export const SceneOffice: React.FC = () => {
             color: V.yellow,
             WebkitTextStroke: `8px ${C.ink}`,
             paintOrder: "stroke fill",
-            opacity: interpolate(frame, [20 + k * 8, 26 + k * 8], [0, 1], clamp),
+            opacity: interpolate(frame, [SILLAS + 34 + k * 8, SILLAS + 40 + k * 8], [0, 1], clamp),
           }}
         >
           ?
         </div>
       ))}
-      <OfficeBoard present={12} total={12} to={1} changeAt={8} changeLen={46} date="17 SEP 13" />
-      <Caption name="Oficinas" delay={6} accentWords="vacías confundidos" accent={V.red} style={{ top: 430, fontSize: 80 }}>
+      <OfficeBoard present={12} total={12} to={1} changeAt={SILLAS} changeLen={44} date="17 SEP 13" />
+      <Caption name="Pregunta oficinas" delay={6} style={{ top: 430, fontSize: 80 }}>
+        ¿Y en las oficinas?
+      </Caption>
+      <Caption name="Oficinas" delay={SILLAS} accentWords="vacías confundidos" accent={V.red} style={{ top: 560, fontSize: 80 }}>
         Sillas vacías y jefes confundidos
       </Caption>
-      <Sfx name="Ding vacío" file="ding.wav" from={54} volume={0.4} />
+      <Sfx name="Ding vacío" file="ding.wav" from={SILLAS + 30} volume={0.4} />
     </AbsoluteFill>
   );
 };
 
 /* ───────────── 9. TRECE AÑOS DESPUÉS ───────────── */
-const SIX = 48;
+const SIX = cue("s09", "sale");
 export const SceneLater: React.FC = () => {
   const frame = useCurrentFrame();
   const zoom = interpolate(frame, [0, 130], [1, 1.12], clamp);
@@ -352,8 +357,11 @@ export const SceneLater: React.FC = () => {
       </BigText>
       <CalendarPage day="19" month="NOVIEMBRE" year="2026" at={SIX - 10} top={420} color={V.pink} />
       <Stamp text="¡MAÑANA!" at={SIX + 12} top={1020} size={110} color={V.red} rotate={8} />
-      <Caption name="Asustan" delay={70} accentWords="asustan" accent={V.pink} style={{ top: 1240, fontSize: 80 }}>
-        Sale GTA VI. Y los números asustan
+      <Caption name="Sale GTA 6" delay={SIX + 2} accentWords="VI." accent={V.cyan} style={{ top: 1180, fontSize: 84 }}>
+        Sale GTA VI.
+      </Caption>
+      <Caption name="Asustan" delay={cue("s09", "numeros")} accentWords="asustan" accent={V.pink} style={{ top: 1320, fontSize: 84 }}>
+        Y los números asustan
       </Caption>
       <Vhs amount={interpolate(frame, [0, 10], [0.7, 0], clamp)} />
       <Sfx name="Glitch" file="glitch.wav" from={0} volume={0.6} />
@@ -364,9 +372,10 @@ export const SceneLater: React.FC = () => {
 };
 
 /* ───────────── 10. 1,5 MILLONES · 1.000 MILLONES A LA BASURA ───────────── */
-const PEOPLE = [24, 96] as const;
-const TRASH = 130;
-const BIN_STAMP = 186;
+const PEOPLE = [cue("s10", "millon") + 3, cue("s10", "millon") + 42] as const;
+const MONEY_TEXT = cue("s10", "mil");
+const TRASH = cue("s10", "basura") - 12;
+const BIN_STAMP = cue("s10", "basura") + 8;
 export const SceneNumbers: React.FC = () => {
   const frame = useCurrentFrame();
   const people = Math.round(interpolate(frame, PEOPLE, [0, 1_500_000], { ...clamp, easing: Easing.out(Easing.cubic) }));
@@ -399,8 +408,8 @@ export const SceneNumbers: React.FC = () => {
           ) : null;
         })}
       </svg>
-      {frame >= TRASH - 24 && (
-        <BigText top={1020} size={110} at={TRASH - 24} color="#7CFFA6">
+      {frame >= MONEY_TEXT && (
+        <BigText top={1020} size={110} at={MONEY_TEXT} color="#7CFFA6">
           $1.000 MILLONES
         </BigText>
       )}
@@ -422,7 +431,7 @@ export const SceneNumbers: React.FC = () => {
       <div style={{ position: "absolute", left: 380, top: 1450, width: 320, height: 40, borderRadius: 14, background: "#8B9AA8", border: `8px solid ${C.ink}`, rotate: `${lidOpen}deg`, transformOrigin: "0% 100%" }} />
       <Stamp text="A LA BASURA" at={BIN_STAMP} top={1290} size={88} />
       <Sfx name="Ding gente" file="ding.wav" from={PEOPLE[1]} volume={0.4} />
-      <Sfx name="Caja" file="cash.wav" from={TRASH - 24} volume={0.5} />
+      <Sfx name="Caja" file="cash.wav" from={MONEY_TEXT} volume={0.5} />
       <Sfx name="Golpe basura" file="kick.wav" from={TRASH + 14} volume={0.8} />
       <Sfx name="Boom basura" file="boom.wav" from={BIN_STAMP} volume={0.7} />
     </AbsoluteFill>
@@ -430,13 +439,13 @@ export const SceneNumbers: React.FC = () => {
 };
 
 /* ───────────── 11. DIAGNÓSTICO: FIEBRE DE VICE CITY ───────────── */
-const NOT_FLU = 74;
-const VICE = 98;
+const NOT_FLU = cue("s11", "gripe");
+const VICE = cue("s11", "vice");
 export const SceneDiagnosis: React.FC = () => {
   const frame = useCurrentFrame();
   const vice = frame >= VICE;
   const card = interpolate(frame, [VICE, VICE + 10], [0, 1], { ...clamp, easing: Easing.out(Easing.back(1.6)) });
-  const coughs = [18, 46];
+  const coughs = [cue("s11", "tose") + 2, cue("s11", "tose") + 22];
   return (
     <AbsoluteFill style={{ translate: `${shakeX(frame, VICE, 16)}px 0` }}>
       {vice ? <NeonSky zoom={1.05} /> : <Office />}
@@ -489,6 +498,7 @@ export const SceneCta: React.FC = () => {
   const frame = useCurrentFrame();
   const opt = (at: number) => interpolate(frame, [at, at + 8], [0, 1], { ...clamp, easing: Easing.out(Easing.back(2)) });
   const pulse = 1 + Math.max(0, Math.sin((frame - 80) * 0.25)) * 0.05 * (frame > 80 ? 1 : 0);
+  const LEO = cue("s12", "leo");
   return (
     <AbsoluteFill>
       <Room />
@@ -498,8 +508,8 @@ export const SceneCta: React.FC = () => {
       </Caption>
       <div style={{ position: "absolute", left: 110, right: 110, top: 610, display: "flex", flexDirection: "column", gap: 22 }}>
         {[
-          { k: "A", t: "VOY A TRABAJAR", bg: "#2E6BD8", at: 30, s: 1 },
-          { k: "B", t: "ME ENFERMO", bg: V.pink, at: 60, s: pulse },
+          { k: "A", t: "VOY A TRABAJAR", bg: "#2E6BD8", at: cue("s12", "vas") + 4, s: 1 },
+          { k: "B", t: "ME ENFERMO", bg: V.pink, at: cue("s12", "enfermar"), s: pulse },
         ].map((o) => (
           <div key={o.k} style={{ display: "flex", alignItems: "center", gap: 20, padding: "14px 24px", borderRadius: 26, background: o.bg, border: `7px solid ${C.ink}`, fontFamily: display, fontSize: 62, color: C.white, scale: `${opt(o.at) * o.s}`, boxShadow: "0 10px 0 rgba(0,0,0,0.35)" }}>
             <span style={{ background: C.white, color: C.ink, borderRadius: 16, padding: "0 20px", border: `5px solid ${C.ink}` }}>{o.k}</span>
@@ -510,11 +520,11 @@ export const SceneCta: React.FC = () => {
       <CouchBack top={1400} />
       <Character {...GAMER} x={540} y={SEAT_Y} height={420} pose="idle" mood="happy" thermometer holding="controller" />
       <Couch top={1400} />
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1530, textAlign: "center", fontFamily: display, fontSize: 64, color: V.yellow, WebkitTextStroke: `8px ${C.ink}`, paintOrder: "stroke fill", opacity: interpolate(frame, [100, 110], [0, 1], clamp) }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 1660, textAlign: "center", fontFamily: display, fontSize: 64, color: V.yellow, WebkitTextStroke: `8px ${C.ink}`, paintOrder: "stroke fill", opacity: interpolate(frame, [LEO, LEO + 8], [0, 1], clamp) }}>
         TE LEO EN COMENTARIOS
       </div>
-      <Sfx name="Pop A" file="ding.wav" from={30} volume={0.3} />
-      <Sfx name="Pop B" file="ding.wav" from={60} volume={0.3} />
+      <Sfx name="Pop A" file="ding.wav" from={cue("s12", "vas") + 4} volume={0.3} />
+      <Sfx name="Pop B" file="ding.wav" from={cue("s12", "enfermar")} volume={0.3} />
     </AbsoluteFill>
   );
 };

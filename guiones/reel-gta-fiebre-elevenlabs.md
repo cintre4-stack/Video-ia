@@ -1,6 +1,6 @@
 # Reel "La fiebre GTA": texto para ElevenLabs
 
-Voz: MARCOS PROFESIONAL (wfwG5A1z7UhZfYQ68gAv), modelo eleven_v4. El vídeo usa ahora la voz offline (Piper).
+Voz del vídeo: "Marcos The Agent" (eleven_v4), audio único partido con scripts/split-voiceover-gta.py.
 Para cambiarla, guarda cada línea como `public/voiceover/gta/sNN.mp3`, actualiza las duraciones (en fotogramas a 30 fps)
 en `src/ReelGta/voiceover.generated.ts` y vuelve a renderizar: las escenas se ajustan solas a la voz.
 
