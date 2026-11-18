@@ -27,6 +27,8 @@ export type Kit = {
   /** font size of the shirt number / text (default 38) */
   numberSize?: number;
   numberColor?: string;
+  /** optional necktie color (office shirts) */
+  tie?: string;
 };
 
 export type CharacterProps = {
@@ -50,7 +52,11 @@ export type CharacterProps = {
   /** extra vertical lift in px (jumps) */
   lift?: number;
   /** optional prop held in the raised right hand */
-  holding?: "redcard" | "board" | "trophy" | "shirt" | "whistle";
+  holding?: "redcard" | "board" | "trophy" | "shirt" | "whistle" | "phone" | "controller";
+  /** thermometer sticking out of the mouth */
+  thermometer?: boolean;
+  /** greenish sick face with a sweat drop */
+  sick?: boolean;
   boardText?: string;
   opacity?: number;
 };
@@ -75,6 +81,8 @@ export const Character: React.FC<CharacterProps> = ({
   holding,
   boardText,
   opacity = 1,
+  thermometer,
+  sick,
 }) => {
   const frame = useCurrentFrame() + phase;
   const id = useId().replace(/:/g, "");
@@ -170,6 +178,13 @@ export const Character: React.FC<CharacterProps> = ({
   if (holding === "shirt") {
     armR = -170;
   }
+  if (holding === "phone") {
+    armR = -155;
+  }
+  if (holding === "controller") {
+    armR = -60 + Math.sin(frame * 0.9) * 6;
+    armL = 60 - Math.sin(frame * 0.9 + 1) * 6;
+  }
 
   const scale = height / 320;
   const eyesClosed = mood === "happy" && pose === "celebrate";
@@ -235,6 +250,9 @@ export const Character: React.FC<CharacterProps> = ({
             stroke="rgba(0,0,0,0.25)"
             strokeWidth={3}
           />
+          {kit.tie && (
+            <path d="M 94 130 h 12 l -2 8 l 8 46 l -12 14 l -12 -14 l 8 -46 Z" fill={kit.tie} stroke="rgba(0,0,0,0.3)" strokeWidth={2} />
+          )}
           {kit.number !== undefined && (
             <text
               x={100}
@@ -274,8 +292,18 @@ export const Character: React.FC<CharacterProps> = ({
             {/* cheeks */}
             <circle cx={70} cy={92} r={8} fill="#FF8A8A" opacity={0.35} />
             <circle cx={130} cy={92} r={8} fill="#FF8A8A" opacity={0.35} />
+            {sick && <circle cx={100} cy={72} r={56} fill="#7CC46A" opacity={0.32} />}
             <Eyes mood={mood} closed={eyesClosed} />
             <Mouth mood={mood} />
+            {thermometer && (
+              <g transform="rotate(-24 112 106)">
+                <rect x={110} y={101} width={62} height={10} rx={5} fill="#F4F7FB" stroke={C.ink} strokeWidth={3} />
+                <rect x={128} y={104} width={36} height={4} rx={2} fill="#E3121B" />
+              </g>
+            )}
+            {sick && (
+              <path d="M 146 34 q 10 16 0 22 q -10 -6 0 -22 Z" fill="#8FD3FF" stroke={C.ink} strokeWidth={2} />
+            )}
           </g>
           {holding && holding !== "shirt" && (
             <g transform={`rotate(${armR} 136 146)`}>
@@ -422,6 +450,23 @@ const Held: React.FC<{ kind: NonNullable<CharacterProps["holding"]>; text?: stri
       return <rect x={hx - 14} y={hy} width={28} height={40} rx={4} fill="#E3121B" stroke={C.ink} strokeWidth={3} />;
     case "whistle":
       return <circle cx={hx} cy={hy + 6} r={8} fill="#CCCCCC" />;
+    case "phone":
+      return (
+        <g transform={`translate(${hx} ${hy + 4}) rotate(180)`}>
+          <rect x={-13} y={-6} width={26} height={46} rx={6} fill="#1E2430" stroke={C.ink} strokeWidth={3} />
+          <rect x={-9} y={0} width={18} height={30} rx={3} fill="#7FD1FF" />
+        </g>
+      );
+    case "controller":
+      return (
+        <g transform={`translate(${hx} ${hy + 8})`}>
+          <path d="M -34 -6 q 34 -12 68 0 q 14 26 0 30 q -10 2 -18 -8 h -32 q -8 10 -18 8 q -14 -4 0 -30 Z" fill="#2B2F3A" stroke={C.ink} strokeWidth={3} />
+          <circle cx={16} cy={2} r={4} fill="#36FF6B" />
+          <circle cx={24} cy={8} r={4} fill="#FF4D6D" />
+          <rect x={-24} y={2} width={14} height={4} fill="#9AA3B2" />
+          <rect x={-19} y={-3} width={4} height={14} fill="#9AA3B2" />
+        </g>
+      );
     case "shirt":
       return (
         <path

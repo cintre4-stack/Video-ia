@@ -1,0 +1,19 @@
+{
+  "title": "Reel La fiebre GTA · GTA V (2013) y GTA 6 (19 nov 2026)",
+  "note": "Texto para Piper: siglas escritas como suenan en español. Versión ElevenLabs (con etiquetas) en guiones/reel-gta-fiebre-elevenlabs.md",
+  "lines": [
+    ["s01", "Mañana, miles de personas van a despertar con la misma enfermedad. Y no tiene cura."],
+    ["s02", "Rebobinemos. Diecisiete de septiembre de dos mil trece. Sale ge te a cinco."],
+    ["s03", "Una encuesta en i ge ene, con once mil lectores: casi la mitad ya había pedido el día libre."],
+    ["s04", "Y uno de cada cinco confesó que iba a llamar al trabajo, fingiendo estar enfermo."],
+    ["s05", "Cof, cof. Jefe... hoy no puedo ir."],
+    ["s06", "La noche anterior: colas a medianoche frente a las tiendas."],
+    ["s07", "Resultado: ochocientos millones de dólares en un solo día. Mil millones en tres. ¡Récord mundial!"],
+    ["s08", "¿Y en las oficinas? Sillas vacías, y jefes muy confundidos."],
+    ["s09", "Trece años después, sale ge te a seis. Y los números asustan."],
+    ["s10", "Un economista calcula que un millón y medio de estadounidenses podrían faltar. Mil millones de dólares en productividad, a la basura."],
+    ["s11", "Así que, si mañana tu compañero tose raro... no es gripe. ¡Es fiebre de Vais Siti!"],
+    ["s12", "¿Y tú? ¿Vas a ir a trabajar mañana, o te vas a enfermar? Te leo en comentarios."]
+  ],
+  "speed": { "s05": 1.05, "s11": 0.95 }
+}

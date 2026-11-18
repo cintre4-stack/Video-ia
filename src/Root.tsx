@@ -1,4 +1,6 @@
 import { Composition, Folder } from "remotion";
+import { ReelGta } from "./ReelGta/ReelGta";
+import { REEL_GTA_FRAMES } from "./ReelGta/timeline";
 import { ReelAnfield } from "./ReelAnfield/ReelAnfield";
 import { REEL_ANFIELD_FRAMES } from "./ReelAnfield/timeline";
 import { Reel9320 } from "./Reel9320/Reel9320";
@@ -19,6 +21,14 @@ export const RemotionRoot: React.FC = () => {
         id="Reel-Anfield-2019"
         component={ReelAnfield}
         durationInFrames={REEL_ANFIELD_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Reel-Fiebre-GTA"
+        component={ReelGta}
+        durationInFrames={REEL_GTA_FRAMES}
         fps={30}
         width={1080}
         height={1920}
