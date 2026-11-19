@@ -1,0 +1,18 @@
+{
+  "title": "Reel Pickles 1966 · El perro que encontró la Copa del Mundo",
+  "note": "Texto para Piper: nombres en inglés escritos tal como suenan en español. La versión ElevenLabs (Marcos) usa la ortografía normal.",
+  "lines": [
+    ["s01", "Inglaterra ganó su único Mundial... gracias a un perro. Rebobinemos."],
+    ["s02", "Londres, marzo del sesenta y seis. Faltan cuatro meses para el Mundial... y roban la copa."],
+    ["s03", "Piden quince mil libras. Escótland Iard busca... y nada."],
+    ["s04", "Siete días después, Déivid Córbet pasea a su perro, Píquels."],
+    ["s05", "Píquels olfatea un paquete envuelto en periódico."],
+    ["s06a", "Córbet lo abre y..."],
+    ["s06b", "¡Es la Copa del Mundo!"],
+    ["s07", "Píquels, héroe nacional."],
+    ["s08", "En julio, Inglaterra gana el Mundial..."],
+    ["s09", "y Píquels va a la cena de campeones."],
+    ["s10", "¿Quién fue el verdadero héroe? ¿Bobi Mur, o Píquels? Te leo en comentarios."]
+  ],
+  "speed": { "s06b": 0.8, "s01": 0.95 }
+}
