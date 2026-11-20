@@ -1,0 +1,18 @@
+{
+  "lines": [
+    ["s01", "¡Ya tenemos a nuestros once titulares!"],
+    ["s02", "Los primeros once comentarios fueron los afortunados. ¡Gracias, cracks!"],
+    ["s03", "¡Y completamos la meta! Dos mil cuatrocientos dólares."],
+    ["s04", "Ya tenemos vestidores,"],
+    ["s05", "¡y gradas para la afición!"],
+    ["s06", "Llegó el gran partido, contra el equipo de tercera división."],
+    ["s07", "Ellos dominaban todo el partido. Tiro, tras tiro, tras tiro."],
+    ["s08", "Pero en el último minuto... ¡contragolpe... y gooool!"],
+    ["s09", "¡Ganamos uno a cero! ¡Ya somos de tercera división!"],
+    ["s10", "Pero ahora viene lo más difícil. Para llegar a segunda división, necesitamos diez mil dólares."],
+    ["s11", "Cada laik es un dólar. ¡Y cada comentario, diez!"],
+    ["s12", "¡Comenta ya! Nos vemos en la cancha."]
+  ],
+  "speed": {"s01": 0.85, "s05": 0.85, "s08": 0.85, "s09": 0.8, "s12": 0.85},
+  "gap": {"s03": 0.35, "s06": 0.35, "s08": 0.3, "s10": 0.4}
+}
