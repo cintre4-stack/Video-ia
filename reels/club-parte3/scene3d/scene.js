@@ -678,7 +678,7 @@ function shot(name, lt, dur, t) {
       tagCfg = { px: 130, only: [9] }; // last minute: long ball, our #9 runs and scores in GOAL_A
       setEnv('night');
       coach.visible = false;
-      const run = easeInOut(k / 0.78);
+      const run = easeInOut(k / 0.66);
       const st = RED_T[9];
       const zS = lerp(PITCH_Z + 8, GOAL_A + 9, run);
       formation(GREY_T, false, 18);
@@ -687,7 +687,7 @@ function shot(name, lt, dur, t) {
       RED_T.forEach((p, i) => { p.g.scale.setScalar(1.3); p.pose(t, 0.8, 0, i); });
       const gk = GREY_T[0]; gk.g.rotation.y = 0; gk.g.position.set(0, 0, GOAL_A + 1.2);
       place(st, 1.2, zS, Math.PI); st.g.scale.setScalar(1.3); st.pose(t, 1, 0, 0);
-      const kick = 0.8, ku = (k - kick) / 0.12;
+      const kick = 0.68, ku = (k - kick) / 0.12;
       if (k < kick) ball.position.set(1.2 + 0.4, 0.35, zS - 0.9);
       else { const q = clamp01(ku); ball.position.set(lerp(1.6, -2.6, q), 0.35 + Math.sin(q * Math.PI) * 1.4 + q * 0.6, lerp(GOAL_A + 8, GOAL_A - 1.0, q)); gk.g.position.x = 1.8 * easeOut(q); gk.g.rotation.z = -0.9 * easeOut(q); }
       if (k > kick) { st.pose(t, 0, clamp01((k - kick - 0.1) / 0.05), 0); }

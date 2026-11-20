@@ -1,7 +1,8 @@
 """Build vo/voice.wav + vo/timeline.json for Parte 3.
 
 Piper (offline):   python3 make_vo.py piper <model.onnx> guion.json vo/
-ElevenLabs take:   python3 make_vo.py take <voice.mp3> guion.json vo/
+ElevenLabs take (hand timed): python3 make_vo.py manual voz/marcos-eleven-v4.mp3 voz/timeline.json vo/
+ElevenLabs take (auto cut): python3 make_vo.py take <voice.mp3> guion.json vo/
   (one take with all the lines; it is cut at the 11 longest silences, in order)
 
 timeline.json = {"tl": {id: [start, end]}, "total": seconds}
@@ -27,14 +28,14 @@ def load(path, af=None):
     return np.frombuffer(subprocess.check_output(cmd), np.float32).copy()
 
 
-def write(out, voice, tl):
+def write(out, voice, tl, marks=None):
     out.mkdir(parents=True, exist_ok=True)
     total = len(voice) / SR + 0.6
     voice = np.concatenate([voice, np.zeros(int(0.6 * SR), np.float32)])
     p = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-",
                           str(out / "voice.wav")], stdin=subprocess.PIPE)
     p.communicate(voice.tobytes())
-    (out / "timeline.json").write_text(json.dumps({"tl": tl, "total": round(total, 3)}, indent=1))
+    (out / "timeline.json").write_text(json.dumps({"tl": tl, "total": round(total, 3), **({"marks": marks} if marks else {})}, indent=1))
     print("total", round(total, 2), "s")
 
 
@@ -85,7 +86,16 @@ def take(path, g, out):
     write(out, a, tl)
 
 
+def manual(src, tlfile, out):
+    """ElevenLabs take with hand-measured times: voz/timeline.json has "tl" (+ optional "marks")."""
+    t = json.loads(Path(tlfile).read_text())
+    write(out, load(src), t["tl"], t.get("marks"))
+
+
 if __name__ == "__main__":
     mode, src, guion, out = sys.argv[1:5]
-    g = json.loads(Path(guion).read_text())
-    (piper if mode == "piper" else take)(src, g, Path(out))
+    if mode == "manual":
+        manual(src, guion, Path(out))
+    else:
+        g = json.loads(Path(guion).read_text())
+        (piper if mode == "piper" else take)(src, g, Path(out))

@@ -1,0 +1,19 @@
+{
+  "source": "voz/marcos-eleven-v4.mp3",
+  "note": "Toma de ElevenLabs (Marcos The Agent, eleven_v4). Tiempos en segundos de cada frase del video, medidos con silencedetect + minimos de energia.",
+  "tl": {
+    "s01": [0.0, 2.10],
+    "s02": [2.444, 5.182],
+    "s03": [5.536, 8.784],
+    "s04": [9.157, 10.46],
+    "s05": [10.55, 11.273],
+    "s06": [11.673, 14.455],
+    "s07": [15.016, 18.108],
+    "s08": [18.604, 22.016],
+    "s09": [22.225, 25.188],
+    "s10": [25.621, 30.678],
+    "s11": [31.131, 33.828],
+    "s12": [34.236, 36.5975]
+  },
+  "marks": {"gracias": 4.5, "gol": 21.2, "diezmil": 29.85}
+}

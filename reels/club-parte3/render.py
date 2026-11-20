@@ -513,19 +513,19 @@ def confetti(canvas, lt):
 
 
 # ---------------------------------------------------------------- subtitles (word by word, Part 1 style)
-SUBS = {
-    "s01": ["¡Ya tenemos a nuestros *ONCE* *TITULARES!*"],
-    "s02": ["Los primeros *11* comentarios fueron los *AFORTUNADOS.*", "¡*GRACIAS,* cracks!"],
-    "s03": ["¡Y completamos la *META!*", "*$2.400*"],
-    "s04": ["Ya tenemos *VESTIDORES,*"],
-    "s05": ["¡y *GRADAS* para la afición!"],
-    "s06": ["Llegó el gran partido contra el equipo de *TERCERA* *DIVISIÓN.*"],
-    "s07": ["Ellos *DOMINABAN* todo el partido.", "Tiro, tras tiro, tras *TIRO...*"],
-    "s08": ["Pero en el *ÚLTIMO* *MINUTO...*", "¡*CONTRAGOLPE...* y *GOOOL!*"],
-    "s09": ["¡Ganamos *1-0!*", "¡Ya somos de *TERCERA* *DIVISIÓN!*"],
-    "s10": ["Pero ahora viene lo más *DIFÍCIL.*", "Para llegar a *SEGUNDA* *DIVISIÓN*", "necesitamos *$10.000.*"],
-    "s11": ["Cada *LIKE* es *$1.*", "¡Y cada *COMENTARIO,* *$10!*"],
-    "s12": ["¡*COMENTA* *YA!* Nos vemos en la cancha."],
+SUBS = {  # (text, weight) chunks; the weight is roughly the seconds each chunk is spoken, pauses included
+    "s01": [("¡Ya tenemos a nuestros *ONCE* *TITULARES!*", 1)],
+    "s02": [("Los once primeros comentarios fueron los *AFORTUNADOS.*", 1)],
+    "s03": [("¡Completamos la *META!*", 1.45), ("*$2.400* dólares", 2.1)],
+    "s04": [("*VESTIDORES* nuevos...", 1)],
+    "s05": [("¡y *GRADAS!*", 1)],
+    "s06": [("Llegó el gran partido contra *TERCERA* *DIVISIÓN.*", 1)],
+    "s07": [("Nos *DOMINABAN...*", 1.3), ("tiro tras tiro tras *TIRO...*", 1.9)],
+    "s08": [("Pero en el *ÚLTIMO* *MINUTO...*", 1.6), ("¡*CONTRAGOLPE...* y *GOOOL!*", 1.9)],
+    "s09": [("¡Ganamos *1-0!*", 1.0), ("¡Ya somos de *TERCERA* *DIVISIÓN!*", 1.7)],
+    "s10": [("Ahora viene lo más *DIFÍCIL...*", 1.85), ("Para llegar a *SEGUNDA* *DIVISIÓN*", 1.9), ("necesitamos *$10.000.*", 1.5)],
+    "s11": [("Cada *LIKE* es *$1.*", 1.4), ("¡Y cada *COMENTARIO,* *$10!*", 1.5)],
+    "s12": [("¡*COMENTA* *YA!* Nos vemos en la cancha.", 1)],
 }
 SUBSZ = 64
 
@@ -534,10 +534,10 @@ def sub_chunks():
     out = []
     for k, chunks in SUBS.items():
         a, b = LINES[k]
-        total = sum(len(c) for c in chunks)
+        total = sum(w for _, w in chunks)
         t = a
-        for c in chunks:
-            dur = (b - a) * len(c) / total
+        for c, w in chunks:
+            dur = (b - a) * w / total
             out.append((t, t + dur, c))
             t += dur
     return [(a, out[i + 1][0] if i + 1 < len(out) else TOTAL + 1, c, e) for i, (a, e, c) in enumerate(out)]
@@ -593,7 +593,7 @@ NAMES = ["hook", "thanks", "goal", "lockers", "stands", "vs", "press", "counter"
 CUTS = [0.0] + [L(f"s{i:02d}") - 0.12 for i in range(2, 13)] + [TOTAL]
 SCENES = [(CUTS[i], CUTS[i + 1], n) for i, n in enumerate(NAMES)]
 START = {n: CUTS[i] for i, n in enumerate(NAMES)}
-MARKS = {"gracias": frac("s02", 0.72), "diezmil": frac("s10", 0.78), "gol": frac("s08", 0.82)}
+MARKS = {"gracias": frac("s02", 0.75), "diezmil": frac("s10", 0.78), "gol": frac("s08", 0.82), **TL.get("marks", {})}
 
 
 def stamp(text, sub=None, fill=RED, bg=(255, 255, 255, 245), w=820):

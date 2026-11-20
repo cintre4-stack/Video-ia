@@ -14,6 +14,7 @@ VODIR, SFX, VIDEO, OUT = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3], sys.
 SR = 44100
 TL = json.loads((VODIR / "timeline.json").read_text())
 L, TOTAL = TL["tl"], TL["total"]
+MK = TL.get("marks", {})
 N = int(TOTAL * SR) + SR
 
 
@@ -71,7 +72,7 @@ def fr(k, f):
 
 
 # a little silence for the "$10.000" hit
-a = int(fr("s10", 0.78) * SR)
+a = int(MK.get("diezmil", fr("s10", 0.78)) * SR)
 music[a:a + int(1.3 * SR)] *= np.linspace(0.15, 1, int(1.3 * SR)) ** 2
 # tension during the match: music drops, crowd carries it
 a, b = int(L["s07"][0] * SR), int(fr("s08", 0.82) * SR)
@@ -88,8 +89,8 @@ for c in cuts:
 add(fx, S["roar"], 0.0, 0.5)
 for i in range(11):
     add(fx, S["kick"], L["s02"][0] + 0.15 + i * 0.12, 0.35)       # the 11 pop in
-add(fx, S["ding"], fr("s03", 0.45), 0.8)                          # META COMPLETADA
-add(fx, S["roar"], fr("s03", 0.45), 0.4)
+add(fx, S["ding"], L["s03"][0] + 1.0, 0.8)                          # META COMPLETADA
+add(fx, S["roar"], L["s03"][0] + 1.0, 0.4)
 add(fx, S["ding"], cuts[2] + 0.15, 0.8)                           # vestidores
 add(fx, S["ding"], cuts[3] + 0.15, 0.8)                           # gradas
 add(fx, S["roar"], cuts[3] + 0.3, 0.45)
@@ -99,12 +100,12 @@ for q in (0.08, 0.38, 0.68):                                      # three shots,
     add(fx, S["kick"], cuts[5] + dur * q, 0.7)
     add(fx, S["groan"], cuts[5] + dur * (q + 0.17), 0.25)
 add(fx, S["heartbeat"], L["s08"][0], 0.6)
-add(fx, S["kick"], fr("s08", 0.7), 0.8)
-add(fx, S["boom"], fr("s08", 0.82), 0.8)                          # GOOOL
-add(fx, S["roar"], fr("s08", 0.82), 0.9)
+add(fx, S["kick"], MK.get("gol", fr("s08", 0.82)) - 0.2, 0.8)
+add(fx, S["boom"], MK.get("gol", fr("s08", 0.82)), 0.8)                          # GOOOL
+add(fx, S["roar"], MK.get("gol", fr("s08", 0.82)), 0.9)
 add(fx, S["whistle-final"], cuts[7] + 0.1, 0.5)
 add(fx, S["roar"], cuts[7] + 0.3, 0.6)
-add(fx, S["boom"], fr("s10", 0.78), 0.8)                          # NECESITAMOS $10.000
+add(fx, S["boom"], MK.get("diezmil", fr("s10", 0.78)), 0.8)                          # NECESITAMOS $10.000
 add(fx, S["ding"], fr("s11", 0.05), 0.6)
 add(fx, S["ding"], fr("s11", 0.5), 0.6)
 crowd = S["crowd"][: int(TOTAL * SR)]
