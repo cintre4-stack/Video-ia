@@ -6,6 +6,9 @@ import * as THREE from './three.module.js';
 const W = 1080, H = 1920, FPS = 30;
 const cfg = await (await fetch('scenes.json')).json();
 const ENV = await (await fetch('env.json')).json();
+const lilita = new FontFace('Lilita', await (await fetch('LilitaOne.woff2')).arrayBuffer());
+await lilita.load();
+document.fonts.add(lilita);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1);
@@ -445,6 +448,68 @@ const RED_T = [], GREY_T = [];
 for (let i = 0; i < 11; i++) RED_T.push(makeMini(i === 0 ? 0xffd640 : 0xd8272c, i === 0 ? 0x1a1418 : 0xf2f2f2, i + 1));
 for (let i = 0; i < 11; i++) GREY_T.push(makeMini(i === 0 ? 0x2fa860 : 0x6b7184, 0x2a2e3a, i + 1));
 const minis = [...RED_T, ...GREY_T];
+// name tags of the 11 winners of Part 2, above the heads of shirts #1..#11
+const TAG_NAMES = ['@DavidAlarcon-k6c', '@CarlosalejandroDominguez-h3t', '@Jose-g8h5z', '@lucilarivera3502',
+  '@irmaguadalupe|castellanosar5763', '@Mikeandike2023', '@ValentinoTellecheao', '@AlejandoSantay',
+  '@saulayuquearaujo5998', '@DylanalexanderCortes-k2d', '@CarlosMalagueño-w8s'];
+function splitName(n) {
+  if (n.includes('|')) return n.split('|');
+  if (n.length <= 15) return [n];
+  let best = Math.ceil(n.length / 2), bm = 1e9;
+  for (let i = 4; i < n.length - 3; i++) {
+    const c = n[i], prev = n[i - 1];
+    const natural = c === '-' || (/[A-Z]/.test(c) && /[a-z]/.test(prev)) || (/[0-9]/.test(c) && !/[0-9]/.test(prev));
+    const score = Math.max(i, n.length - i) - (natural ? 7 : 0);
+    if (score < bm) { bm = score; best = i; }
+  }
+  return [n.slice(0, best), n.slice(best)];
+}
+const tags = TAG_NAMES.map((name, i) => {
+  const lines = splitName(name);
+  const c = document.createElement('canvas');
+  const g = c.getContext('2d');
+  const fs = 62, lh = 70;
+  g.font = `${fs}px Lilita`;
+  const tw = Math.max(...lines.map(l => g.measureText(l).width));
+  const w = Math.ceil(tw) + 140, h = lines.length * lh + 34;
+  c.width = w; c.height = h + 26;
+  g.font = `${fs}px Lilita`;
+  g.fillStyle = 'rgba(20,24,40,0.93)'; g.strokeStyle = '#ffffff'; g.lineWidth = 7;
+  g.beginPath(); g.roundRect(4, 4, w - 8, h - 8, 28); g.fill(); g.stroke();
+  g.beginPath(); g.moveTo(w / 2 - 22, h - 6); g.lineTo(w / 2 + 22, h - 6); g.lineTo(w / 2, h + 20); g.closePath();
+  g.fillStyle = '#ffffff'; g.fill();
+  g.fillStyle = '#d8272c'; g.beginPath(); g.roundRect(16, 16, 80, h - 32, 18); g.fill();
+  g.fillStyle = '#ffffff'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(String(i + 1), 56, h / 2 + 3);
+  g.fillStyle = '#ffd640'; g.textAlign = 'center';
+  lines.forEach((l, k) => g.fillText(l, 106 + tw / 2 + 4, 17 + lh / 2 + k * lh + 4));
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, depthWrite: false, fog: false }));
+  sp.center.set(0.5, 0);
+  sp.renderOrder = 10;
+  sp.userData.aspect = c.width / c.height;
+  sp.userData.rows = lines.length;
+  sp.visible = false;
+  scene.add(sp);
+  return sp;
+});
+// tagCfg: null = hidden; {px: tag height on screen (of 1920), only: shirt indexes to show}
+let tagCfg = null;
+const _v = new THREE.Vector3();
+function updateTags() {
+  tags.forEach((sp, i) => {
+    const p = RED_T[i];
+    if (!tagCfg || !p.g.visible || (tagCfg.only && !tagCfg.only.includes(i))) { sp.visible = false; return; }
+    const sc = p.g.scale.x;
+    if (sc < 0.3) { sp.visible = false; return; }
+    sp.visible = true;
+    sp.position.set(p.g.position.x, p.g.position.y + 2.8 * sc, p.g.position.z);
+    const dist = _v.copy(sp.position).sub(camera.position).length();
+    const pop = Math.min(1, sc / (tagCfg.full || sc));
+    const h = pop * (tagCfg.px * (sp.userData.rows === 1 ? 0.62 : 1)) / 1920 * 2 * dist * Math.tan(camera.fov * Math.PI / 360);
+    sp.scale.set(h * sp.userData.aspect, h, 1);
+  });
+}
 // 4-3-3 in "board" units (x -1..1 across, y 0 own goal .. 1 halfway)
 const F433 = [[0, 0.03], [-0.75, 0.3], [-0.27, 0.24], [0.27, 0.24], [0.75, 0.3], [-0.5, 0.55], [0, 0.5], [0.5, 0.55], [-0.7, 0.85], [0, 0.9], [0.7, 0.85]];
 
@@ -504,11 +569,13 @@ function shot(name, lt, dur, t) {
   stands.scale.set(1, 1, 1);
   fans.forEach(f => (f.g.position.y = f.y));
   hideMinis();
+  tagCfg = null;
   const m = mouthAt(t);
   const mark = n => cfg.marks[n] - cfg.start[name];
 
   switch (name) {
-    case 'hook': { // the coach + his new eleven behind him
+    case 'hook': {
+      // the coach + his new eleven behind him
       setEnv('dusk');
       setCoach('cheer', t, m, 'happy');
       coach.position.y = Math.abs(Math.sin(lt * 5)) * 0.35;
@@ -524,17 +591,19 @@ function shot(name, lt, dur, t) {
       cam(0, 3.4, 11.5 - 0.8 * k, 0, 2.8, -1, 42);
       break;
     }
-    case 'thanks': { // top view: the 11 lucky ones in formation
+    case 'thanks': { // the 11 lucky ones, spread out so every name fits
+      tagCfg = { px: 100, full: 2.4 };
       setEnv('dusk');
       coach.visible = false;
-      ball.position.set(0, 0.35, PITCH_Z);
-      RED_T.forEach((p, i) => {
-        const [fx, fy] = F433[i];
-        place(p, fx * 13, PITCH_Z + 22 - fy * 34, 0);
-        p.g.scale.setScalar(Math.max(0.001, easeBack((lt - 0.15 - i * 0.12) / 0.3)) * 2.6);
+      ball.visible = false;
+      const ROWS = [[0], [1, 2, 3], [4, 5, 6], [7, 8], [9, 10]], RZ = [24, 13, 2, -9, -20], RX = { 1: [0], 2: [-6, 6], 3: [-8.6, 0, 8.6] };
+      ROWS.forEach((row, r) => row.forEach((i, j) => {
+        const p = RED_T[i];
+        place(p, RX[row.length][j], PITCH_Z + RZ[r], 0);
+        p.g.scale.setScalar(Math.max(0.001, easeBack((lt - 0.1 - i * 0.1) / 0.3)) * 2.4);
         p.pose(t, 0, lt > mark('gracias') ? 1 : 0, i);
-      });
-      cam(0, 36, PITCH_Z + 46, 0, 0, PITCH_Z + 3, 50);
+      }));
+      cam(0, 34, PITCH_Z + 50, 0, 0, PITCH_Z + 1, 52);
       break;
     }
     case 'goal': {
@@ -566,7 +635,8 @@ function shot(name, lt, dur, t) {
       cam(p.x - 16, 4.5, p.z + 8 - 3 * k, p.x, 3.2, p.z - 1, 48);
       break;
     }
-    case 'vs': { // both teams lined up, slow orbit
+    case 'vs': {
+      // both teams lined up, slow orbit
       setEnv('night');
       coach.visible = false;
       ball.position.set(0, 0.35, PITCH_Z);
@@ -576,7 +646,8 @@ function shot(name, lt, dur, t) {
       cam(Math.sin(a) * 24, 6, PITCH_Z + Math.cos(a) * 24, 0, 1.5, PITCH_Z, 42);
       break;
     }
-    case 'press': { // they attack our goal (+z): three shots, our keeper saves them all
+    case 'press': {
+      tagCfg = { px: 120, only: [0] }; // they attack our goal (+z): three shots, our keeper saves them all
       setEnv('night');
       coach.visible = false;
       formation(RED_T, true, -6);
@@ -600,10 +671,11 @@ function shot(name, lt, dur, t) {
       keeper.g.position.y = Math.abs(kx) > 0.5 ? 0.6 : 0;
       ball.position.set(bx, by, bz);
       ball.rotation.set(t * 8, t * 5, 0);
-      cam(5, 5, GOAL_B + 9, 0, 1.4, GOAL_B - 8, 50);
+      cam(2.5, 5, GOAL_B + 9, -1, 1.4, GOAL_B - 8, 50);
       break;
     }
-    case 'counter': { // last minute: long ball, our #9 runs and scores in GOAL_A
+    case 'counter': {
+      tagCfg = { px: 130, only: [9] }; // last minute: long ball, our #9 runs and scores in GOAL_A
       setEnv('night');
       coach.visible = false;
       const run = easeInOut(k / 0.78);
@@ -667,6 +739,7 @@ window.renderAt = (t) => {
   let s = cfg.scenes[cfg.scenes.length - 1];
   for (const sc of cfg.scenes) if (t >= sc.s0 && t < sc.s1) { s = sc; break; }
   shot(s.name, t - s.s0, s.s1 - s.s0, t);
+  updateTags();
   renderer.render(scene, camera);
   return renderer.domElement.toDataURL('image/jpeg', 0.93);
 };

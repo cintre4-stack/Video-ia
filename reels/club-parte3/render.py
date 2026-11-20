@@ -645,7 +645,7 @@ def sc_thanks(c, lt, t):
     d.text((540, 215), "= los primeros 11 comentarios", 50)
     g = MARKS["gracias"] - START["thanks"]
     if lt > g:
-        paste(c, title_plate("¡GRACIAS!", GREEN, 90), 540, 1310, ease_back((lt - g) / 0.3), rot=-5)
+        paste(c, title_plate("¡GRACIAS!", GREEN, 90), 540, 1470, ease_back((lt - g) / 0.3), rot=-5)
         confetti(c, lt - g)
 
 
@@ -685,7 +685,7 @@ def sc_press(c, lt, t):
     stat_bar(c, 330, "POSESIÓN", "20%", "80%", p)
     stat_bar(c, 460, "TIROS", 0, 17, p)
     if lt > 0.9:
-        paste(c, title_plate("¡NOS DOMINAN!", RED, 70), 540, 670, ease_back((lt - 0.9) / 0.3), rot=-4)
+        paste(c, title_plate("¡NOS DOMINAN!", RED, 70), 540, 1380, ease_back((lt - 0.9) / 0.3), rot=-4)
 
 
 def sc_counter(c, lt, t):
