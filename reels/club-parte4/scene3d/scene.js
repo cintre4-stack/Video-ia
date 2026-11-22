@@ -692,7 +692,7 @@ function shot(name, lt, dur, t) {
       youTag.visible = true;
       youTag.position.set(_w.x, _w.y + 1.45 * (1 + 0.9 * pop) + 0.95, _w.z);
       youTag.scale.set(2.6 * pop + 0.01, 1.3 * pop + 0.01, 1);
-      cam(_w.x - 12 + 2 * k, _w.y + 1.6, _w.z + 0.4, _w.x, _w.y + 1.4, _w.z, 42);
+      cam(_w.x - 12 + 2 * k, _w.y + 2.6, _w.z + 0.4, _w.x, _w.y + 3.6, _w.z, 42);
       break;
     }
     case 'mystery': case 'animal': { // the most-liked comment becomes the mascot
