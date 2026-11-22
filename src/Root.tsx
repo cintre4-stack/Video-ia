@@ -3,6 +3,8 @@ import { ReelAnfield } from "./ReelAnfield/ReelAnfield";
 import { REEL_ANFIELD_FRAMES } from "./ReelAnfield/timeline";
 import { Reel9320 } from "./Reel9320/Reel9320";
 import { REEL_9320_FRAMES } from "./Reel9320/timeline";
+import { FCStuart } from "./FCStuart/FCStuart";
+import { FC_STUART_FRAMES } from "./FCStuart/timeline";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -19,6 +21,14 @@ export const RemotionRoot: React.FC = () => {
         id="Reel-Anfield-2019"
         component={ReelAnfield}
         durationInFrames={REEL_ANFIELD_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="FC-Stuart-Fichajes"
+        component={FCStuart}
+        durationInFrames={FC_STUART_FRAMES}
         fps={30}
         width={1080}
         height={1920}
