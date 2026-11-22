@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { Coach, Fan } from "./Coach";
+import { Coach3DScene, FanRow3D } from "./Coach3D";
 import { FC_STUART_FRAMES, SCENE_FRAMES, SCENE_START } from "./timeline";
 
 const FONT = "'Arial Black', 'Arial', sans-serif";
@@ -84,14 +84,14 @@ const Banner: React.FC<{ text: string }> = ({ text }) => (
 
 const Hook: React.FC = () => {
   const frame = useCurrentFrame();
-  const bob = Math.abs(Math.sin(frame / 6)) * 30;
+  const bob = Math.abs(Math.sin(frame / 6)) * 0.35;
   const mouth = (Math.sin(frame / 4) + 1) / 2;
   return (
     <AbsoluteFill>
       <Title text="¡NECESITAMOS AFICIÓN!" top={140} size={80} />
       <Title text="PARA SUBIR A SEGUNDA" color="#fff" top={300} size={62} />
-      <div style={{ position: "absolute", left: 0, right: 0, top: 560, display: "flex", justifyContent: "center", transform: "scale(0.82)" }}>
-        <Coach armsUp={1} mouthOpen={mouth} bob={bob} />
+      <div style={{ position: "absolute", left: 0, top: 480, width: 1080, height: 900 }}>
+        <Coach3DScene width={1080} height={900} armsUp={1} mouthOpen={mouth} bob={bob} scale={1.3} />
       </div>
       <Banner text="FC Stuart · Tercera división" />
     </AbsoluteFill>
@@ -113,10 +113,8 @@ const Comments: React.FC = () => {
       <div style={{ position: "absolute", top: 640, left: 0, right: 0, textAlign: "center", fontFamily: FONT, fontSize: 84, color: YELLOW, WebkitTextStroke: "8px #0B0B14", paintOrder: "stroke fill" }}>
         ${(count * 10).toLocaleString("en-US")}
       </div>
-      <div style={{ position: "absolute", top: 900, left: 60, right: 60, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10 }}>
-        {Array.from({ length: fans }).map((_, i) => (
-          <Fan key={i} size={130} jump={Math.abs(Math.sin((frame + i * 7) / 6)) * 18} />
-        ))}
+      <div style={{ position: "absolute", left: 0, top: 880, width: 1080, height: 700 }}>
+        <FanRow3D width={1080} height={700} count={Math.max(1, fans)} />
       </div>
       <Banner text="Cada comentario = $10 dólares" />
     </AbsoluteFill>
@@ -138,8 +136,8 @@ const Likes: React.FC = () => {
       <div style={{ position: "absolute", top: 820, left: 0, right: 0, textAlign: "center", fontFamily: FONT, fontSize: 84, color: YELLOW, WebkitTextStroke: "8px #0B0B14", paintOrder: "stroke fill" }}>
         ${likes.toLocaleString("en-US")}
       </div>
-      <div style={{ position: "absolute", top: 1020, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
-        <Coach armsUp={0.6} mouthOpen={0.5} />
+      <div style={{ position: "absolute", left: 0, top: 980, width: 1080, height: 760 }}>
+        <Coach3DScene width={1080} height={760} armsUp={0.6} mouthOpen={0.5} scale={1.15} />
       </div>
       <Banner text="Ya llevamos dinero para fichajes" />
     </AbsoluteFill>
