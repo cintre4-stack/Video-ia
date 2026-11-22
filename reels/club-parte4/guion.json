@@ -1,0 +1,16 @@
+{
+  "lines": [
+    ["s01", "¡Lo logramos! ¡Ya tenemos los diez mil dólares!"],
+    ["s02", "¡Estamos en segunda división!"],
+    ["s03", "Pero hay un problema. Nuestro estadio está vacío."],
+    ["s04", "No tenemos afición."],
+    ["s05", "Así que cada comentario, será un aficionado del efe ce Estuat."],
+    ["s06", "¡Tú comentas, y te sientas en las gradas!"],
+    ["s07", "Y ojo. El comentario con más laiks, será la mascota del equipo."],
+    ["s08", "¡Con el nombre del animal, obvio!"],
+    ["s09", "Cada comentario, un aficionado. Cada laik, cuenta para la mascota."],
+    ["s10", "¡Comenta ya! Nos vemos en la cancha."]
+  ],
+  "speed": {"s01": 0.85, "s02": 0.85, "s06": 0.85, "s08": 0.8, "s10": 0.85},
+  "gap": {"s03": 0.3, "s05": 0.3, "s07": 0.35, "s08": 0.2, "s09": 0.3}
+}
