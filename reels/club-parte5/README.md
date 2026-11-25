@@ -16,7 +16,7 @@ Los 5 goles caen en `marks.goals` (segundos absolutos); si no están en el timel
 4. `python3 render.py vo/ video.mp4 --fonts fonts/ --bg3d f3d/`
 5. `python3 mix.py vo/ ../../public/sfx video.mp4 reel-club-parte5.mp4`
 
-## Texto para ElevenLabs (eleven_v4, Marcos The Agent `eEyWolF7iBpMA65GbtAm`), ~27 s
+## Texto para ElevenLabs (eleven_v4, Marcos The Agent `eEyWolF7iBpMA65GbtAm`), ~24 s
 
 ```
 [excited] ¡Ya somos SEISCIENTOS aficionados!
@@ -25,15 +25,17 @@ Los 5 goles caen en `marks.goals` (segundos absolutos); si no están en el timel
 
 [serious] Pero ya empezó la COPA…
 
-[tense] y en cuartos de final… nos tocó el FC Lombrises.
+[tense] En cuartos nos tocó el FC Lombrises.
 
-[proud] Salimos con nuestro once titular.
+[proud] Nuestro once titular.
 
-[nervous] Y el FC Lombrises nos metió… [pause] uno… [pause] dos… [pause] tres… [pause] cuatro… [shouting] ¡CINCO goles!
+[nervous] Y nos metieron: uno, dos, tres, cuatro… [shouting] ¡CINCO goles!
 
 [sighs, devastated] Cinco a cero.
 
-[determined] Solo nos queda meter SEIS goles en la vuelta… [shouting] ¡en SU estadio!
+[determined] Nos quedan SEIS goles en la vuelta… [shouting] ¡en SU estadio!
 
 [playful] ¿Lo lograremos? [excited] ¡Comenta YA!
 ```
+
+La toma usada está en `voz/marcos-eleven-v4.mp3` y sus tiempos en `voz/timeline.json`.

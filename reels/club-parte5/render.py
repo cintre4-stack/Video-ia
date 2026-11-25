@@ -517,12 +517,12 @@ SUBS = {  # (text, weight) chunks; the weight is roughly the seconds each chunk 
     "s01": [("¡Ya somos *600* *AFICIONADOS!*", 1)],
     "s02": [("Y la mascota será... ¡un *OSITO!*", 1.8), ("Idea de *@MATEOPEREZO7*", 1.2)],
     "s03": [("Pero ya empezó la *COPA...*", 1)],
-    "s04": [("y en *CUARTOS* *DE* *FINAL*", 1.4), ("nos tocó el *FC* *LOMBRISES.*", 1.5)],
-    "s05": [("Salimos con nuestro *ONCE* *TITULAR.*", 1)],
-    "s06": [("Y el FC Lombrises nos metió...", 1.6), ("*UNO...* *DOS...* *TRES...* *CUATRO...* ¡*CINCO* *GOLES!*", 3.2)],
+    "s04": [("En *CUARTOS* nos tocó el *FC* *LOMBRISES.*", 1)],
+    "s05": [("Nuestro *ONCE* *TITULAR.*", 1)],
+    "s06": [("Y nos metieron: *UNO,* *DOS,* *TRES,* *CUATRO...*", 3.4), ("¡*CINCO* *GOLES!*", 1.3)],
     "s07": [("*CINCO* *A* *CERO.*", 1)],
-    "s08": [("Solo nos queda meter *SEIS* *GOLES* en la vuelta...", 2.4), ("¡en *SU* *ESTADIO!*", 1.1)],
-    "s09": [("¿Lo *LOGRAREMOS?* ¡*COMENTA* *YA!*", 1)],
+    "s08": [("Nos quedan *SEIS* *GOLES* en la vuelta...", 2.3), ("¡en *SU* *ESTADIO!*", 1.1)],
+    "s09": [("¿Lo *LOGRAREMOS?*", 1), ("¡*COMENTA* *YA!*", 1)],
 }
 SUBSZ = 64
 

@@ -1,0 +1,16 @@
+{
+  "source": "voz/marcos-eleven-v4.mp3",
+  "note": "Toma de ElevenLabs (Marcos The Agent, eleven_v4), 25/11. Tiempos de voz medidos con silencedetect; marks = instante en que Marcos dice cada numero y 'seis'.",
+  "tl": {
+    "s01": [0.0, 2.17],
+    "s02": [2.60, 6.19],
+    "s03": [6.72, 8.03],
+    "s04": [8.51, 10.71],
+    "s05": [11.03, 12.26],
+    "s06": [12.67, 17.10],
+    "s07": [18.07, 18.93],
+    "s08": [19.46, 22.47],
+    "s09": [22.87, 24.764]
+  },
+  "marks": {"goals": [13.8, 14.3, 14.9, 15.55, 16.3], "osito": 4.3, "seis": 20.15}
+}
