@@ -688,12 +688,17 @@ function shot(name, lt, dur, t) {
   };
 
   switch (name) {
-    case 'hook': { // "¡ya somos 600 aficionados!"
-      setEnv('night');
-      fansShow('all', lt, t, 1.6);
-      coachAtStands('cheer', 'happy');
+    case 'hook': { // "¡ya somos 600 aficionados!": same opening as Part 4 (dusk, coach close-up, the team celebrating)
+      setEnv('dusk');
+      setCoach('cheer', t, m, 'happy');
       coach.position.y = Math.abs(Math.sin(lt * 5)) * 0.35;
-      cam(SX - 22 + 2 * k, 4.0, SZ, SX + 3, 4.4, SZ, 52);
+      RED_T.forEach((p, i) => {
+        const row = i < 6 ? 0 : 1, col = row ? i - 6 : i, n = row ? 5 : 6;
+        place(p, (col - (n - 1) / 2) * 1.9, -5 - row * 2.6, 0);
+        p.g.scale.setScalar(Math.max(0.001, easeBack((lt - 0.15 - i * 0.05) / 0.3)));
+        p.pose(t, 0, 1, i);
+      });
+      cam(0, 3.6, 11.5 - 0.8 * k, 0, 4.5, -1, 42);
       break;
     }
     case 'mascot': { // the black silhouette turns into the osito
