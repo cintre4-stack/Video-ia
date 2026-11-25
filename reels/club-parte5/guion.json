@@ -1,0 +1,15 @@
+{
+  "lines": [
+    ["s01", "¡Ya somos seiscientos aficionados!"],
+    ["s02", "Y la mascota será... ¡un osito! Idea de Mateo."],
+    ["s03", "Pero ya empezó la copa."],
+    ["s04", "Y en cuartos de final, nos tocó el efe ce Lombrises."],
+    ["s05", "Salimos con nuestro once titular."],
+    ["s06", "Y el efe ce Lombrises nos metió. Uno. Dos. Tres. Cuatro. ¡Cinco goles!"],
+    ["s07", "Cinco a cero."],
+    ["s08", "Solo nos queda meter seis goles en la vuelta. ¡En su estadio!"],
+    ["s09", "¿Lo lograremos? ¡Comenta ya!"]
+  ],
+  "speed": {"s01": 0.85, "s02": 0.9, "s06": 0.9, "s07": 1.1, "s09": 0.85},
+  "gap": {"s03": 0.35, "s06": 0.25, "s07": 0.4, "s08": 0.35}
+}
