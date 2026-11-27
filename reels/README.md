@@ -1,6 +1,6 @@
 # Club Cabezón
 
-Nombre de la serie y del estilo de animación de los reels "Mi nuevo club" (partes 2, 3 y 4).
+**Club Cabezón** es el nombre de la serie ("Mi nuevo club", partes 2 a 5) y **Estilo Cabezón 3D** es el nombre del estilo de animación (hashtag: #EstiloCabezón3D).
 
 El estilo en una línea: personajes cabezones en 3D low-poly, con gráficos pop encima y subtítulos palabra por palabra.
 
