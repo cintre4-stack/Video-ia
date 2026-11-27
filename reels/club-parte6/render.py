@@ -514,16 +514,16 @@ def confetti(canvas, lt):
 
 # ---------------------------------------------------------------- subtitles (word by word, Part 1 style)
 SUBS = {  # (text, weight) chunks; the weight is roughly the seconds each chunk is spoken, pauses included
-    "s01": [("¡Llegamos al estadio del *FC* *LOMBRISES!*", 2.2), ("Necesitamos *SEIS* *GOLES.*", 1.4)],
+    "s01": [("¡Llegamos al estadio del *FC* *LOMBRISES!*", 3.1), ("Necesitamos *SEIS* *GOLES.*", 1.6)],
     "s02": [("Salimos con *TODO...*", 1)],
-    "s03": [("Y metimos... ¡*UNO!* ¡*DOS!* ¡*TRES!*", 2.2), ("¡*CUATRO* *GOLES* seguidos!", 1.6)],
+    "s03": [("Y metimos... ¡*UNO!* ¡*DOS!* ¡*TRES!*", 2.7), ("¡*CUATRO* *GOLES* seguidos!", 1.45)],
     "s04": [("Pero el FC Lombrises *DESCONTÓ...*", 1)],
     "s05": [("*4-6* en el global...", 1.4), ("y quedan *3* *MINUTOS.*", 1.3)],
     "s06": [("¡*GOL!* ¡Y *OTRO* *GOL!*", 1.4), ("¡*SEIS* *A* *SEIS!*", 1.0)],
     "s07": [("Nos vamos a *PENALES...*", 1)],
-    "s08": [("El último lo tira nuestro *NÚMERO* *10...*", 2.0), ("¡*GOOOL!* ¡Estamos en *SEMIFINALES!*", 2.0)],
-    "s09": [("Ahora necesitamos *$14.000*", 1.6), ("para mejorar el estadio,", 1.3), ("antes del *1* *DE* *DICIEMBRE.*", 1.5)],
-    "s10": [("Cada *LIKE,* *$1.* ¡Cada *COMENTARIO,* *$10!*", 2.4), ("¡*COMENTA* *YA!*", 0.9)],
+    "s08": [("El último lo tira nuestro *NÚMERO* *10...*", 2.3), ("¡*GOOOL!* ¡Estamos en *SEMIFINALES!*", 2.5)],
+    "s09": [("Ahora necesitamos *$14.000*", 1.8), ("para mejorar el estadio,", 1.5), ("antes del *1* *DE* *DICIEMBRE.*", 1.7)],
+    "s10": [("Cada *LIKE,* *$1.* ¡Cada *COMENTARIO,* *$10!*", 3.0), ("¡*COMENTA* *YA!*", 1.2)],
 }
 SUBSZ = 64
 

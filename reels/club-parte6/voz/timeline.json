@@ -1,0 +1,17 @@
+{
+  "source": "voz/marcos-eleven-v4.mp3",
+  "note": "Toma de ElevenLabs (Marcos The Agent, eleven_v4), 27/11. Tiempos medidos con silencedetect; marks = instante en que Marcos dice cada gol (g4 = uno, dos, tres, cuatro; desc = descontó; two = gol, otro gol; gol = GOOOL del penal).",
+  "tl": {
+    "s01": [0.0, 4.82],
+    "s02": [5.25, 6.34],
+    "s03": [6.61, 10.74],
+    "s04": [11.18, 12.98],
+    "s05": [13.41, 16.34],
+    "s06": [16.73, 19.17],
+    "s07": [19.62, 20.68],
+    "s08": [21.16, 25.94],
+    "s09": [26.33, 31.17],
+    "s10": [31.60, 35.474]
+  },
+  "marks": {"g4": [7.5, 8.15, 8.85, 9.5], "desc": 12.35, "two": [17.05, 17.9], "gol": 23.7}
+}
