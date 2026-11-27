@@ -17,3 +17,4 @@ El estilo en una línea: personajes cabezones en 3D low-poly, con gráficos pop 
 | 3 | `club-parte3` | Meta de $2.400, vestidores, gradas y victoria 1-0 |
 | 4 | `club-parte4` | $10.000, estadio vacío, comentarios = aficionados y mascota |
 | 5 | `club-parte5` | 600 aficionados, mascota osito, copa: 0-5 vs FC Lombrises |
+| 6 | `club-parte6` | Vuelta en su estadio: 6-1, 6-6 global, penales del #10 y a semifinales; meta $14.000 |

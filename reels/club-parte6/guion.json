@@ -1,0 +1,16 @@
+{
+  "lines": [
+    ["s01", "¡Llegamos al estadio del efe ce Lombrises! Necesitamos seis goles."],
+    ["s02", "Salimos con todo."],
+    ["s03", "Y metimos. ¡Uno! ¡Dos! ¡Tres! ¡Cuatro goles seguidos!"],
+    ["s04", "Pero el efe ce Lombrises descontó."],
+    ["s05", "Cuatro a seis en el global. Y quedan tres minutos."],
+    ["s06", "¡Gol! ¡Y otro gol! ¡Seis a seis!"],
+    ["s07", "Nos vamos a penales."],
+    ["s08", "El último lo tira nuestro número diez. ¡Gol! ¡Estamos en semifinales!"],
+    ["s09", "Ahora necesitamos catorce mil dólares para mejorar el estadio, antes del uno de diciembre."],
+    ["s10", "Cada laik, un dólar. ¡Cada comentario, diez! ¡Comenta ya!"]
+  ],
+  "speed": {"s01": 0.9, "s03": 0.85, "s06": 0.8, "s08": 0.9, "s10": 0.85},
+  "gap": {"s04": 0.3, "s05": 0.2, "s07": 0.3, "s09": 0.4}
+}
